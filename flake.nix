@@ -1,0 +1,73 @@
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Latest stable branch of nixpkgs, used for version rollback
+    # The current latest version is 24.11
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    agenix.url = "github:ryantm/agenix";
+    nixarr.url = "github:rasmus-kirk/nixarr";
+  };
+  outputs = { nixpkgs, nixpkgs-stable, home-manager, disko, agenix, nixarr, ...
+    }@inputs: {
+      colmena = {
+        meta = {
+          # It helps prevent accidental deployments to the entire cluster when tags are used (e.g., @production and @staging).
+          allowApplyAll = false;
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+            overlays = [ ];
+            config.allowUnfree = true;
+            # Maybe a fix for OBS
+            config.cudaSupport = true;
+          };
+          specialArgs = { inherit inputs; };
+        };
+
+        wolfcall = hosts/desktop/wolfcall/default.nix;
+        lemnos = hosts/server/remote/lemnos/default.nix;
+        agios = hosts/server/remote/agios/default.nix;
+        rhodes = hosts/server/local/rhodes/default.nix;
+      };
+
+      # Only used for initial deployments
+      nixosConfigurations = {
+        lemnos = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hosts/server/remote/lemnos/default.nix
+            agenix.nixosModules.default
+            disko.nixosModules.disko
+            nixarr.nixosModules.default
+          ];
+        };
+        agios = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hosts/server/remote/agios/default.nix
+            agenix.nixosModules.default
+            disko.nixosModules.disko
+            nixarr.nixosModules.default
+          ];
+        };
+        rhodes = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hosts/server/local/rhodes/configuration.nix
+            agenix.nixosModules.default
+            disko.nixosModules.disko
+            nixarr.nixosModules.default
+          ];
+        };
+      };
+    };
+}
+

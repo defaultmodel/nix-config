@@ -1,0 +1,27 @@
+{
+  imports = [
+    ./borgbackup.nix
+    ./adguardhome.nix
+    ./immich.nix
+    ./jellyfin.nix
+    ./monitoring-client.nix
+    ./monitoring-server.nix
+    ./paperless.nix
+    ./navidrome.nix
+    ./vaultwarden.nix
+    ./steam.nix
+    ./obs-studio.nix
+    ./nvidia.nix
+    ./fonts.nix
+    ./locale.nix
+    ./ssh-hardening.nix
+    ./system-hardening.nix
+    ./default-packages.nix
+    ./watchdog.nix
+    ./storage-optimization.nix
+    ./boot.nix
+    ./coolercontrol.nix
+    ./sound.nix
+    ./music-player.nix
+  ];
+}
