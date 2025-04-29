@@ -24,5 +24,11 @@
     ./jellyfin.nix
     ./jellyseer.nix
     ./navidrome.nix
+    ./bazarr.nix
+    ./prowlarr.nix
+    ./radarr.nix
+    ./sonarr.nix
+    ./lidarr.nix
+    ./recyclarr.nix
   ];
 }

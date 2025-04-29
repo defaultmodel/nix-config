@@ -17,5 +17,11 @@ in {
 
   ### ARR ###
 
+  def.bazarr.enable = true;
+  def.prowlarr.enable = true;
+  def.radarr.enable = true;
+  def.sonarr.enable = true;
+  def.lidarr.enable = true;
+
   ### DOWNLOADERS ###
 }
