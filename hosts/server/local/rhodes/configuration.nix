@@ -1,4 +1,6 @@
-{ config, ... }: {
+{ config, ... }:
+let mediaDir = "/mnt/shares/data";
+in {
 
   imports = [
     ../default.nix # Common config for all local servers
@@ -23,7 +25,7 @@
   ### NAVIDROME ###
   def.navidrome = {
     enable = true;
-    musicFolder = "/mnt/shares/data/media/music";
+    musicFolder = "${mediaDir}/media/music";
   };
 
   ### VAULTWARDEN ###
@@ -32,19 +34,7 @@
   ### IMMICH ###
   def.immich = {
     enable = true;
-    photoFolder = "/var/lib/immich/media";
-  };
-
-  fileSystems."${config.def.immich.photoFolder}" = {
-    device = "//nas/photos";
-    fsType = "cifs";
-    options = [
-      "credentials=${config.age.secrets.smb-credentials.path}"
-      "uid=immich"
-      "gid=immich"
-      "noserverino"
-      "nofail"
-    ];
+    photoFolder = "${mediaDir}/media/photos";
   };
 
   ### PAPERLESS ###
@@ -58,31 +48,7 @@
   def.paperless = {
     enable = true;
     passwordFile = config.age.secrets.paperless-admin-password.path;
-    documentFolder = "${config.services.paperless.dataDir}/media";
+    documentFolder = "${mediaDir}/media/documents";
     consumeFolder = "${config.services.paperless.dataDir}/consume";
-  };
-
-  fileSystems."${config.def.paperless.documentFolder}" = {
-    device = "//nas/documents";
-    fsType = "cifs";
-    options = [
-      "credentials=${config.age.secrets.smb-credentials.path}"
-      "uid=paperless"
-      "gid=paperless"
-      "noserverino"
-      "nofail"
-    ];
-  };
-
-  fileSystems."${config.def.paperless.consumeFolder}" = {
-    device = "//nas/documents-consume";
-    fsType = "cifs";
-    options = [
-      "credentials=${config.age.secrets.smb-credentials.path}"
-      "uid=paperless"
-      "gid=paperless"
-      "noserverino"
-      "nofail"
-    ];
   };
 }
