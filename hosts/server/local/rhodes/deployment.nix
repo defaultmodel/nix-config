@@ -9,6 +9,7 @@
   imports = [
     inputs.disko.nixosModules.disko
     inputs.agenix.nixosModules.default
+    inputs.vpn-confinement.nixosModules.default
 
     ./configuration.nix
   ];

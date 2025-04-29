@@ -1,6 +1,6 @@
 { inputs, ... }: {
   deployment = {
-    targetHost = "158.180.44.80";
+    targetHost = "150.230.150.137";
     targetPort = 22;
     targetUser = "root";
     tags = [ "remote" "oracle" "vps" ];

@@ -14,9 +14,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix.url = "github:ryantm/agenix";
+    vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
   };
-  outputs =
-    { nixpkgs, nixpkgs-stable, home-manager, disko, agenix, ... }@inputs: {
+  outputs = { nixpkgs, nixpkgs-stable, home-manager, disko, agenix
+    , vpn-confinement, ... }@inputs: {
       colmena = {
         meta = {
           # It helps prevent accidental deployments to the entire cluster when tags are used (e.g., @production and @staging).
@@ -45,6 +46,7 @@
             hosts/server/remote/lemnos/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
+            vpn-confinement.nixosModules.default
           ];
         };
         agios = nixpkgs.lib.nixosSystem {
@@ -53,6 +55,7 @@
             hosts/server/remote/agios/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
+            vpn-confinement.nixosModules.default
           ];
         };
         rhodes = nixpkgs.lib.nixosSystem {
@@ -61,6 +64,7 @@
             hosts/server/local/rhodes/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
+            vpn-confinement.nixosModules.default
           ];
         };
       };
