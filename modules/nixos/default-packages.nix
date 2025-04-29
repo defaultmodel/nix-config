@@ -11,7 +11,7 @@ in {
 
   config = mkIf cfg.enable {
     # fuck nano all my homies use helix
-    environment.variables.EDITOR = "helix";
+    environment.variables.EDITOR = "hx";
 
     environment.systemPackages = with pkgs; [
       # archives
