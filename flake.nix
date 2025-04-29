@@ -32,10 +32,10 @@
           specialArgs = { inherit inputs; };
         };
 
-        wolfcall = hosts/desktop/wolfcall/default.nix;
-        lemnos = hosts/server/remote/lemnos/default.nix;
-        agios = hosts/server/remote/agios/default.nix;
-        rhodes = hosts/server/local/rhodes/default.nix;
+        wolfcall = hosts/desktop/wolfcall/deployment.nix;
+        lemnos = hosts/server/remote/lemnos/deployment.nix;
+        agios = hosts/server/remote/agios/deployment.nix;
+        rhodes = hosts/server/local/rhodes/deployment.nix;
       };
 
       # Only used for initial deployments
@@ -43,7 +43,7 @@
         lemnos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            hosts/server/remote/lemnos/default.nix
+            hosts/server/remote/lemnos/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
             nixarr.nixosModules.default
@@ -52,7 +52,7 @@
         agios = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            hosts/server/remote/agios/default.nix
+            hosts/server/remote/agios/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
             nixarr.nixosModules.default
