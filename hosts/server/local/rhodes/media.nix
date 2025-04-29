@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 let mediaDir = "/mnt/shares/data";
 in {
 
@@ -24,4 +24,22 @@ in {
   def.lidarr.enable = true;
 
   ### DOWNLOADERS ###
+
+  age.secrets.torrent-credentials = {
+    file = ../../../../secrets/torrent-credentials.age;
+    mode = "400";
+    owner = "deluge";
+    group = "deluge";
+  };
+
+  def.torrent = {
+    enable = true;
+    mediaDir = mediaDir;
+    authFile = config.age.secrets.torrent-credentials.path;
+    vpn = {
+      enable = true;
+      wgConfFile = config.age.secrets.wg-conf.path;
+    };
+  };
 }
+

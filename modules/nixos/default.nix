@@ -30,5 +30,6 @@
     ./sonarr.nix
     ./lidarr.nix
     ./recyclarr.nix
+    ./torrent.nix
   ];
 }
