@@ -4,6 +4,9 @@ in {
 
   age.secrets.wg-conf = { file = ../../../../secrets/wg-conf.age; };
 
+  # Init media group, used by all apps
+  users.groups.media = { };
+
   ### MEDIA ###
   def.jellyfin = {
     enable = true;
