@@ -10,4 +10,5 @@ in {
   "smb-credentials.age".publicKeys = [ root-rhodes ];
   "slskd-credentials.age".publicKeys = [ root-rhodes ];
   "wg-conf.age".publicKeys = [ root-rhodes ];
+  "torrent-credentials.age".publicKeys = [ root-rhodes ];
 }
