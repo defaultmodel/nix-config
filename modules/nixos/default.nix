@@ -3,11 +3,9 @@
     ./borgbackup.nix
     ./adguardhome.nix
     ./immich.nix
-    ./jellyfin.nix
     ./monitoring-client.nix
     ./monitoring-server.nix
     ./paperless.nix
-    ./navidrome.nix
     ./vaultwarden.nix
     ./steam.nix
     ./obs-studio.nix
@@ -23,5 +21,8 @@
     ./coolercontrol.nix
     ./sound.nix
     ./music-player.nix
+    ./jellyfin.nix
+    ./jellyseer.nix
+    ./navidrome.nix
   ];
 }
