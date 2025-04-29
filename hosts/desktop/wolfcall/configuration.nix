@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+
+  imports = [ ../default.nix ./disk-config.nix ];
+
   networking = {
     hostName = "wolfcall";
     networkmanager.enable =

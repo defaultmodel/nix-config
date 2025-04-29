@@ -2,6 +2,8 @@
 
   # Common config for all desktops
 
+  imports = [ ../default.nix ];
+
   def.boot = {
     enable = true;
     latestGenerationMax = 20;

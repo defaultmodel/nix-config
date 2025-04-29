@@ -12,9 +12,6 @@
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
 
-    ../../default.nix # Common config for all hosts
-    ../default.nix # Common config for all desktops
-    ./disk-config.nix
     ./configuration.nix
   ];
 
