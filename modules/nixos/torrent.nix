@@ -13,10 +13,7 @@ in {
       default = 8112;
     };
     authFile = mkOption { type = types.path; };
-    vpn = {
-      enable = mkEnableOption "confinement of deluge to a VPN";
-      wgConfFile = mkOption { type = types.path; };
-    };
+    vpn.enable = mkEnableOption "confinement of deluge to a VPN";
   };
 
   config = mkIf cfg.enable {
@@ -37,22 +34,22 @@ in {
 
     # Port mappings
     vpnNamespaces.wg = mkIf cfg.vpn.enable {
-      portMappings = [
+      openVPNPorts = [
         {
-          from = cfg.guiPort;
-          to = cfg.guiPort;
+          port = cfg.guiPort;
+          protocol = "both";
         }
         {
-          from = 58846;
-          to = 58846;
+          port = 58846;
+          protocol = "both";
         }
         {
-          from = 6881;
-          to = 6881;
+          port = 6881;
+          protocol = "both";
         }
         {
-          from = 6891;
-          to = 6891;
+          port = 6891;
+          protocol = "both";
         }
       ];
     };

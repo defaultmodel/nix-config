@@ -36,9 +36,9 @@ in {
 
     # Port mappings
     vpnNamespaces.wg = mkIf cfg.vpn.enable {
-      portMappings = [{
-        from = cfg.guiPort;
-        to = cfg.guiPort;
+      openVPNPorts = [{
+        port = cfg.guiPort;
+        protocol = "both";
       }];
     };
 

@@ -4,6 +4,12 @@ in {
 
   age.secrets.wg-conf = { file = ../../../../secrets/wg-conf.age; };
 
+  vpnNamespaces.wg = {
+    enable = true;
+    wireguardConfigFile = config.age.secrets.wg-conf.path;
+    accessibleFrom = [ "192.168.1.0/24" "10.0.0.0/8" "127.0.0.1" ];
+  };
+
   # Init media group, used by all apps
   users.groups.media = { };
 
@@ -39,19 +45,13 @@ in {
     enable = true;
     mediaDir = mediaDir;
     authFile = config.age.secrets.torrent-credentials.path;
-    vpn = {
-      enable = true;
-      wgConfFile = config.age.secrets.wg-conf.path;
-    };
+    vpn.enable = true;
   };
 
   def.usenet = {
     enable = true;
     mediaDir = mediaDir;
-    vpn = {
-      enable = true;
-      wgConfFile = config.age.secrets.wg-conf.path;
-    };
+    vpn.enable = true;
   };
 
   age.secrets.slskd-credentials = {

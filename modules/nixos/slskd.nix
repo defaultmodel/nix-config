@@ -9,6 +9,7 @@ in {
     enable = mkEnableOption "Slskd music downloader";
     mediaDir = mkOption { type = types.path; };
     authFile = mkOption { type = types.path; };
+    vpn.enable = mkEnableOption "confinement of slskd to a VPN";
   };
 
   config = mkIf cfg.enable {
@@ -17,7 +18,13 @@ in {
       "d '${cfg.mediaDir}/soulseek/complete'    0775 ${config.services.slskd.user} ${config.services.slskd.group} - -"
     ];
 
-    vpnNamespaces.wg = {
+    # Enable and specify VPN namespace to confine service in.
+    systemd.services.deluge.vpnConfinement = mkIf cfg.vpn.enable {
+      enable = true;
+      vpnNamespace = "wg";
+    };
+
+    vpnNamespaces.wg = mkIf cfg.vpn.enable {
       openVPNPorts = [
         {
           port = 2271;
@@ -28,12 +35,6 @@ in {
           protocol = "both";
         } # P2P connection
       ];
-    };
-
-    # Force slskd through VPN
-    systemd.services.slskd.vpnconfinement = {
-      enable = true;
-      vpnnamespace = "wg";
     };
 
     services.slskd = {
