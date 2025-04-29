@@ -51,5 +51,17 @@ in {
     };
   };
 
+  age.secrets.slskd-credentials = {
+    file = ../../../../secrets/slskd-credentials.age;
+    mode = "440";
+    owner = "slskd";
+    group = "slskd";
+  };
+
+  def.slskd = {
+    enable = true;
+    mediaDir = mediaDir;
+    authFile = config.age.secrets.slskd-credentials.path;
+  };
 }
 

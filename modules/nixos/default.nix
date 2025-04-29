@@ -32,5 +32,6 @@
     ./recyclarr.nix
     ./torrent.nix
     ./usenet.nix
+    ./slskd.nix
   ];
 }
