@@ -31,5 +31,6 @@
     ./lidarr.nix
     ./recyclarr.nix
     ./torrent.nix
+    ./usenet.nix
   ];
 }

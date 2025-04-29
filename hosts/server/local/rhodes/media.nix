@@ -41,5 +41,15 @@ in {
       wgConfFile = config.age.secrets.wg-conf.path;
     };
   };
+
+  def.usenet = {
+    enable = true;
+    mediaDir = mediaDir;
+    vpn = {
+      enable = true;
+      wgConfFile = config.age.secrets.wg-conf.path;
+    };
+  };
+
 }
 
