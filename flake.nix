@@ -14,10 +14,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix.url = "github:ryantm/agenix";
-    nixarr.url = "github:rasmus-kirk/nixarr";
   };
-  outputs = { nixpkgs, nixpkgs-stable, home-manager, disko, agenix, nixarr, ...
-    }@inputs: {
+  outputs =
+    { nixpkgs, nixpkgs-stable, home-manager, disko, agenix, ... }@inputs: {
       colmena = {
         meta = {
           # It helps prevent accidental deployments to the entire cluster when tags are used (e.g., @production and @staging).
@@ -46,7 +45,6 @@
             hosts/server/remote/lemnos/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
-            nixarr.nixosModules.default
           ];
         };
         agios = nixpkgs.lib.nixosSystem {
@@ -55,7 +53,6 @@
             hosts/server/remote/agios/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
-            nixarr.nixosModules.default
           ];
         };
         rhodes = nixpkgs.lib.nixosSystem {
@@ -64,7 +61,6 @@
             hosts/server/local/rhodes/configuration.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
-            nixarr.nixosModules.default
           ];
         };
       };

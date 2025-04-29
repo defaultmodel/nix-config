@@ -9,7 +9,6 @@
   imports = [
     inputs.disko.nixosModules.disko
     inputs.agenix.nixosModules.default
-    inputs.nixarr.nixosModules.default
 
     ./configuration.nix
   ];
