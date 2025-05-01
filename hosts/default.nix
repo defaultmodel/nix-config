@@ -12,6 +12,9 @@
   # Eiffel Tower FTW !!
   time.timeZone = lib.mkDefault "Europe/Paris";
 
+  # Experimental my ass
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   # Make every machine aware of each others
   networking.hosts = {
     "192.168.1.2" = [ "ithaca" ];
