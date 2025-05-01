@@ -1,6 +1,6 @@
 { inputs, ... }: {
   deployment = {
-    targetHost = "ithaca";
+    targetHost = "rhodes";
     targetPort = 22;
     targetUser = "root";
     tags = [ "local" ];
