@@ -35,6 +35,7 @@ in {
       tldr
       gnupg
       git
+      git-filter-repo
       lazygit
 
       # Monitoring
