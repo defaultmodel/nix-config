@@ -1,21 +1,17 @@
 { config, lib, ... }:
-{
+with lib;
+let
+  # Shorter name to access a final setting
+  # All modules are under the custom attribute "def"
+  cfg = config.def.adguardhome;
+in {
 
-  options = {
-    def.adguardhome = {
-      enable = lib.mkOption {
-        default = false;
-        type = lib.types.bool;
-      };
-
-      password = lib.mkOption {
-        default = false;
-        type = lib.types.str;
-      };
-    };
+  options.def.adguardhome = {
+    enable = mkEnableOption "Adguardhome Local DNS resolver";
+    password = mkOption { type = types.str; };
   };
 
-  config = lib.mkIf config.def.adguardhome.enable {
+  config = mkIf cfg.enable {
     services.adguardhome = {
       enable = true;
       host = "0.0.0.0";
@@ -24,12 +20,10 @@
       mutableSettings = true;
       allowDHCP = true;
       settings = {
-        users = [
-          {
-            name = "defaultmodel";
-            password = config.def.adguardhome.password;
-          }
-        ];
+        users = [{
+          name = "defaultmodel";
+          password = cfg.password;
+        }];
         auth_attempts = 5;
         block_auth_min = 15;
         http_proxy = "";
@@ -59,11 +53,7 @@
             "194.242.2.4#base.dns.mullvad.net"
             "194.242.2.2#dns.mullvad.net"
           ];
-          bootstrap_dns = [
-            "1.1.1.1"
-            "8.8.8.8"
-            "2606:4700:4700::1111"
-          ];
+          bootstrap_dns = [ "1.1.1.1" "8.8.8.8" "2606:4700:4700::1111" ];
           all_servers = false;
           fastest_addr = true;
           fastest_timeout = "2s";
@@ -143,13 +133,15 @@
         filters = [
           {
             enabled = true;
-            url = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt";
+            url =
+              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt";
             name = "AdGuard DNS filter";
             id = 1;
           }
           {
             enabled = false;
-            url = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt";
+            url =
+              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt";
             name = "AdAway Default Blocklist";
             id = 2;
           }
