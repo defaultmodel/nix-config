@@ -38,6 +38,11 @@ in {
       git-filter-repo
       lazygit
 
+      # DNS
+      dig
+      drill
+      doggo
+
       # Monitoring
       btop # replacement of htop/nmon
       iotop # io monitoring
