@@ -26,8 +26,6 @@
             system = "x86_64-linux";
             overlays = [ ];
             config.allowUnfree = true;
-            # Maybe a fix for OBS
-            config.cudaSupport = true;
           };
           specialArgs = { inherit inputs; };
         };
