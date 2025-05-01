@@ -28,8 +28,27 @@ in {
 
   def.bazarr.enable = true;
   def.prowlarr.enable = true;
-  def.radarr.enable = true;
-  def.sonarr.enable = true;
+
+  age.secrets.radarr-api-key = {
+    file = ../../../../secrets/wg-conf.age;
+    mode = "400";
+    owner = "radarr";
+  };
+  def.radarr = {
+    enable = true;
+    authFile = config.age.secrets.radarr-api-key.path;
+  };
+
+  age.secrets.sonarr-api-key = {
+    file = ../../../../secrets/wg-conf.age;
+    mode = "400";
+    owner = "sonarr";
+  };
+  def.sonarr = {
+    enable = true;
+    authFile = config.age.secrets.sonarr-api-key.path;
+  };
+
   def.lidarr.enable = true;
 
   ### DOWNLOADERS ###
@@ -37,8 +56,7 @@ in {
   age.secrets.torrent-credentials = {
     file = ../../../../secrets/torrent-credentials.age;
     mode = "400";
-    owner = "deluge";
-    group = "deluge";
+    owner = "torrent";
   };
 
   def.torrent = {
@@ -48,11 +66,11 @@ in {
     vpn.enable = true;
   };
 
-  def.usenet = {
-    enable = true;
-    mediaDir = mediaDir;
-    vpn.enable = true;
-  };
+  # def.usenet = {
+  #   enable = true;
+  #   mediaDir = mediaDir;
+  #   vpn.enable = true;
+  # };
 
   age.secrets.slskd-credentials = {
     file = ../../../../secrets/slskd-credentials.age;

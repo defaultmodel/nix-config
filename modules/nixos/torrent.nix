@@ -54,6 +54,12 @@ in {
       ];
     };
 
+    users.users.torrent = {
+      isSystemUser = true;
+      group = "media";
+    };
+    users.groups.torrent = { };
+
     services.deluge = {
       enable = true;
       user = "torrent";
