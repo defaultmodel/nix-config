@@ -35,7 +35,12 @@
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.wayland.enable = true;
 
-  environment.systemPackages = with pkgs; [ colmena equibop bitwarden-desktop ];
+  environment.systemPackages = with pkgs; [
+    colmena
+    equibop
+    bitwarden-desktop
+    signal-desktop
+  ];
 
   def.nvidia.enable = true;
 
