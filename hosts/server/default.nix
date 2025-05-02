@@ -18,7 +18,8 @@
 
   networking = {
     useDHCP = true; # Enabled because the router should have DHCP reserved IP
-    nameservers = [ "192.168.1.30" ];
+    # nameservers = [ "192.168.1.30" ];
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
   };
 
   services.openssh.enable = true;

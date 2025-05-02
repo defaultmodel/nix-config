@@ -45,3 +45,8 @@ SLSKD_PASSWORD=...
 ```
 <password>
 ```
+
+###### cloudflare-dns-api-token.age
+```
+CLOUDFLARE_DNS_API_TOKEN=...
+```

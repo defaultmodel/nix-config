@@ -16,7 +16,7 @@ in {
   ### MEDIA ###
   def.jellyfin = {
     enable = true;
-    mediaDir = mediaDir;
+    mediaDir = "${mediaDir}/media";
   };
   def.jellyseerr.enable = true;
   def.navidrome = {
@@ -49,7 +49,7 @@ in {
     authFile = config.age.secrets.sonarr-api-key.path;
   };
 
-  def.lidarr.enable = true;
+  def.lidarr.enable = false;
 
   ### DOWNLOADERS ###
 

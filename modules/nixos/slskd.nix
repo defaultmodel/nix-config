@@ -4,6 +4,8 @@ let
   # Shorter name to access a final setting
   # All modules are under the custom attribute "def"
   cfg = config.def.slskd;
+  srv = config.services.slskd;
+  certloc = "/var/lib/acme/defaultmodel.eu.org";
 in {
   options.def.slskd = {
     enable = mkEnableOption "Slskd music downloader";
@@ -14,8 +16,8 @@ in {
 
   config = mkIf cfg.enable {
     systemd.tmpfiles.rules = [
-      "d '${cfg.mediaDir}/soulseek/incomplete'  0755 ${config.services.slskd.user} ${config.services.slskd.group} - -"
-      "d '${cfg.mediaDir}/soulseek/complete'    0775 ${config.services.slskd.user} ${config.services.slskd.group} - -"
+      "d '${cfg.mediaDir}/soulseek/incomplete'  0755 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/soulseek/complete'    0775 ${srv.user} ${srv.group} - -"
     ];
 
     # Enable and specify VPN namespace to confine service in.
@@ -40,7 +42,7 @@ in {
     services.slskd = {
       enable = true;
       openFirewall = true;
-      domain = "slskd.defaultmodel.eu.org";
+      domain = null;
       environmentFile = cfg.authFile;
       settings = {
         global = {
@@ -61,6 +63,15 @@ in {
           ];
         };
       };
+    };
+
+    services.caddy = {
+      virtualHosts."slskd.defaultmodel.eu.org".extraConfig = ''
+        reverse_proxy http://localhost:${toString srv.settings.web.port}
+        tls ${certloc}/cert.pem ${certloc}/key.pem {
+          protocols tls1.3
+        }
+      '';
     };
   };
 }

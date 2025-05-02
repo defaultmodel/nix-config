@@ -16,6 +16,15 @@ in {
       address = "192.168.1.30";
       prefixLength = 24;
     }];
+    defaultGateway = {
+      address = "192.168.1.1";
+      interface = "ens18";
+    };
+  };
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ];
   };
 
   age.secrets.smb-credentials = {
@@ -29,12 +38,15 @@ in {
   };
 
   ### REVERSE-PROXY ###
-  def.reverse-proxy.enable = true;
+  age.secrets.cloudflare-dns-api-key = {
+    file = ../../../../secrets/cloudflare-dns-api-key.age;
+    mode = "400";
+    owner = "reverse-proxy";
+  };
 
-  ### NAVIDROME ###
-  def.navidrome = {
+  def.reverse-proxy = {
     enable = true;
-    musicFolder = "${mediaDir}/media/music";
+    cloudflareKeyFile = config.age.secrets.cloudflare-dns-api-key.path;
   };
 
   ### VAULTWARDEN ###
@@ -46,7 +58,7 @@ in {
     photoFolder = "${mediaDir}/media/photos";
   };
 
-  ### PAPERLESS ###
+  ## PAPERLESS ###
   age.secrets.paperless-admin-password = {
     file = ../../../../secrets/paperless-admin-password.age;
     mode = "440";

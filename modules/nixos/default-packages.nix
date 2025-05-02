@@ -37,6 +37,7 @@ in {
       git
       git-filter-repo
       lazygit
+      tcpdump
 
       # DNS
       dig

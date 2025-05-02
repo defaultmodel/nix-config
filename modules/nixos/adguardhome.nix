@@ -96,12 +96,7 @@ in {
           safesearch_cache_size = 1048576;
           parental_cache_size = 1048576;
           cache_time = 30;
-          rewrites = [
-            # {
-            #   domain = "k3s.chriskirby.net";
-            #   answer = "10.100.1.45";
-            # }
-          ];
+          rewrites = [ ]; # Completed by each modules
           blocked_services = [ ];
           upstream_timeout = "10s";
           private_networks = [ ];

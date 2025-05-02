@@ -14,4 +14,6 @@ in {
   "torrent-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "radarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "sonarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
+  "cloudflare-dns-api-key.age".publicKeys =
+    [ defaultmodel-wolfcall root-rhodes ];
 }

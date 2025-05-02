@@ -33,5 +33,6 @@
     ./torrent.nix
     ./usenet.nix
     ./slskd.nix
+    ./reverse-proxy.nix
   ];
 }

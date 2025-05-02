@@ -4,6 +4,8 @@ let
   # Shorter name to access a final setting
   # All modules are under the custom attribute "def"
   cfg = config.def.torrent;
+  srv = config.services.deluge;
+  certloc = "/var/lib/acme/defaultmodel.eu.org";
 in {
   options.def.torrent = {
     enable = mkEnableOption "Torrent downloader";
@@ -18,12 +20,12 @@ in {
 
   config = mkIf cfg.enable {
     systemd.tmpfiles.rules = [
-      "d '${cfg.mediaDir}/torrent'             0755 ${config.services.deluge.user} ${config.services.deluge.group} - -"
-      "d '${cfg.mediaDir}/torrent/.incomplete' 0755 ${config.services.deluge.user} ${config.services.deluge.group} - -"
-      "d '${cfg.mediaDir}/torrent/.watch'      0755 ${config.services.deluge.user} ${config.services.deluge.group} - -"
-      "d '${cfg.mediaDir}/torrent/movies'      0775 ${config.services.deluge.user} ${config.services.deluge.group} - -"
-      "d '${cfg.mediaDir}/torrent/shows'       0775 ${config.services.deluge.user} ${config.services.deluge.group} - -"
-      "d '${cfg.mediaDir}/torrent/music'       0775 ${config.services.deluge.user} ${config.services.deluge.group} - -"
+      "d '${cfg.mediaDir}/torrent'             0755 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/torrent/.incomplete' 0755 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/torrent/.watch'      0755 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/torrent/movies'      0775 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/torrent/shows'       0775 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/torrent/music'       0775 ${srv.user} ${srv.group} - -"
     ];
 
     # Enable and specify VPN namespace to confine service in.
@@ -81,13 +83,22 @@ in {
         pre_allocate_storeage = true;
         upnp = false;
         natpmp = false;
-        enabled_plugins = [ "label" "web" ];
+        enabled_plugins = [ "Label" "Web" ];
         download_location = "${cfg.mediaDir}/torrents/";
         max_upload_speed = "6000.0";
         allow_remote = true;
         daemon_port = 58846;
         listen_ports = [ 6881 6891 ];
       };
+    };
+
+    services.caddy = {
+      virtualHosts."torrent.defaultmodel.eu.org".extraConfig = ''
+        reverse_proxy http://localhost:${toString srv.web.port}
+        tls ${certloc}/cert.pem ${certloc}/key.pem {
+          protocols tls1.3
+        }
+      '';
     };
   };
 }
