@@ -35,11 +35,26 @@ in {
         taplo # TOML
       ];
 
-      languages.language = [{
-        name = "nix";
-        auto-format = true;
-        formatter.command = "${pkgs.nixfmt-classic}/bin/nixfmt";
-      }];
+      languages = {
+        language = [
+          {
+            name = "nix";
+            auto-format = true;
+            formatter.command = "${pkgs.nixfmt-classic}/bin/nixfmt";
+          }
+          {
+            name = "python";
+            auto-format = true;
+            language-servers = [ "pyright" "ruff" ];
+          }
+        ];
+        language-server.pyright.config.python.analysis.typeCheckingMode =
+          "basic";
+        language-server.ruff = {
+          command = "ruff";
+          args = [ "server" ];
+        };
+      };
 
       settings = {
         theme = "iroaseta";
