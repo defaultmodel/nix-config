@@ -10,7 +10,13 @@ in {
     ./media.nix
   ];
 
-  networking.hostName = "rhodes";
+  networking = {
+    hostName = "rhodes";
+    interfaces.ens18.ipv4.addresses = [{
+      address = "192.168.1.30";
+      prefixLength = 24;
+    }];
+  };
 
   age.secrets.smb-credentials = {
     file = ../../../../secrets/smb-credentials.age;
@@ -18,9 +24,12 @@ in {
   };
 
   def.adguardhome = {
-    enable = true;
+    enable = false;
     password = "$2a$15$0kVcvZCskZQvHt.qfi.K/O2d1Iah/8V8S7gGaYXaKZxsQAHdU5nI.";
   };
+
+  ### REVERSE-PROXY ###
+  def.reverse-proxy.enable = true;
 
   ### NAVIDROME ###
   def.navidrome = {
