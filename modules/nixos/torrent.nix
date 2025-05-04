@@ -1,10 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   # Shorter name to access a final setting
   # All modules are under the custom attribute "def"
   cfg = config.def.torrent;
-  srv = config.services.deluge;
+  srv = config.services.transmission;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
 in {
   options.def.torrent = {
@@ -29,31 +29,22 @@ in {
     ];
 
     # Enable and specify VPN namespace to confine service in.
-    systemd.services.deluge.vpnConfinement = mkIf cfg.vpn.enable {
+    systemd.services.transmission.vpnConfinement = mkIf cfg.vpn.enable {
       enable = true;
       vpnNamespace = "wg";
     };
 
     # Port mappings
     vpnNamespaces.wg = mkIf cfg.vpn.enable {
-      openVPNPorts = [
-        {
-          port = cfg.guiPort;
-          protocol = "both";
-        }
-        {
-          port = 58846;
-          protocol = "both";
-        }
-        {
-          port = 6881;
-          protocol = "both";
-        }
-        {
-          port = 6891;
-          protocol = "both";
-        }
-      ];
+      portMappings = [{
+        from = cfg.guiPort;
+        to = cfg.guiPort;
+        protocol = "both";
+      }];
+      openVPNPorts = [{
+        port = srv.settings.peer-port;
+        protocol = "both";
+      }];
     };
 
     users.users.torrent = {
@@ -62,39 +53,54 @@ in {
     };
     users.groups.torrent = { };
 
-    services.deluge = {
+    services.transmission = {
       enable = true;
       user = "torrent";
       group = "media";
 
-      declarative = true;
-      authFile = cfg.authFile;
+      webHome = pkgs.flood-for-transmission;
+      credentialsFile = cfg.authFile;
 
-      openFirewall = true;
-      web = {
-        enable = true;
-        port = cfg.guiPort;
-        openFirewall = true;
-      };
+      openRPCPort = true;
+      openPeerPorts = true;
 
-      # All options are here https://git.deluge-torrent.org/deluge/tree/deluge/core/preferencesmanager.py#n37
-      # Following recommendations from https://trash-guides.info/Downloaders/Deluge/Basic-Setup/
-      config = {
-        pre_allocate_storeage = true;
-        upnp = false;
-        natpmp = false;
-        enabled_plugins = [ "Label" "Web" ];
-        download_location = "${cfg.mediaDir}/torrents/";
-        max_upload_speed = "6000.0";
-        allow_remote = true;
-        daemon_port = 58846;
-        listen_ports = [ 6881 6891 ];
+      settings = {
+        download-dir = "${cfg.mediaDir}/torrent";
+        incomplete-dir-enabled = true;
+        incomplete-dir = "${cfg.mediaDir}/torrent/.incomplete";
+        watch-dir-enabled = true;
+        watch-dir = "${cfg.mediaDir}/torrent/.watch";
+
+        rpc-bind-address = "0.0.0.0";
+        rpc-port = cfg.guiPort;
+        rpc-whitelist-enabled = true;
+        rpc-whitelist = strings.concatStringsSep "," ([
+          "127.0.0.1,192.168.1.*" # Defaults
+        ]);
+        rpc-authentication-required = false;
+
+        blocklist-enabled = true;
+        blocklist-url =
+          "https://github.com/Naunter/BT_BlockLists/raw/master/bt_blocklists.gz";
+
+        peer-port = 50000;
+        dht-enabled = true;
+        pex-enabled = true;
+        utp-enabled = false;
+        encryption = 1;
+        port-forwarding-enabled = false;
+
+        anti-brute-force-enabled = true;
+        anti-brute-force-threshold = 10;
       };
     };
 
+    networking.firewall.allowedTCPPorts = [ cfg.guiPort ];
+    networking.firewall.allowedUDPPorts = [ cfg.guiPort ];
+
     services.caddy = {
       virtualHosts."torrent.defaultmodel.eu.org".extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.web.port}
+        reverse_proxy http://localhost:${toString srv.settings.rpc-port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }
