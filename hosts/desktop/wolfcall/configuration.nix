@@ -14,6 +14,15 @@
     shell = pkgs.fish;
   };
 
+  environment.systemPackages = with pkgs; [
+    colmena
+    equibop
+    bitwarden-desktop
+    signal-desktop
+    qbittorrent
+    ragenix
+  ];
+
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -44,13 +53,6 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    colmena
-    equibop
-    bitwarden-desktop
-    signal-desktop
-  ];
-
   def.nvidia.enable = true;
 
   def.steam.enable = true;
@@ -65,4 +67,6 @@
   def.coolercontrol.enable = true;
 
   def.music-player.enable = true;
+
+  services.tailscale.enable = true;
 }
