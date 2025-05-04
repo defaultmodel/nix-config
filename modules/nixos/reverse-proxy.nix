@@ -14,14 +14,13 @@ in {
   config = mkIf cfg.enable {
     users.users.reverse-proxy = {
       isSystemUser = true;
-      group = "network";
+      group = "media";
     };
-    users.groups.network = { };
+    users.groups.reverse-proxy = { };
 
     services.caddy = {
       enable = true;
-      user = "reverse-proxy";
-      group = "network";
+      # package = pkgs.caddy-cloudflare;
     };
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
