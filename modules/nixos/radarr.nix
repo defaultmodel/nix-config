@@ -29,5 +29,10 @@ in {
         }
       '';
     };
+
+    services.adguardhome.settings.dns.rewrites = [{
+      domain = "radarr.defaultmodel.eu.org";
+      answer = config.networking.interfaces.ens18.ipv4;
+    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
   };
 }

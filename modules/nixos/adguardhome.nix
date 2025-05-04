@@ -4,6 +4,9 @@ let
   # Shorter name to access a final setting
   # All modules are under the custom attribute "def"
   cfg = config.def.adguardhome;
+  srv = config.services.adguardhome;
+  certloc = "/var/lib/acme/defaultmodel.eu.org";
+  url = "adguardhome.defaultmodel.eu.org";
 in {
 
   options.def.adguardhome = {
@@ -96,7 +99,10 @@ in {
           safesearch_cache_size = 1048576;
           parental_cache_size = 1048576;
           cache_time = 30;
-          rewrites = [ ]; # Completed by each modules
+          rewrites = [{
+            domain = url;
+            answer = config.networking.interfaces.ens18.ipv4;
+          }];
           blocked_services = [ ];
           upstream_timeout = "10s";
           private_networks = [ ];
@@ -197,9 +203,25 @@ in {
     };
     networking = {
       firewall = {
-        allowedTCPPorts = [ config.services.adguardhome.port 53 68 853 ];
+        allowedTCPPorts = [ srv.port 53 68 853 ];
         allowedUDPPorts = [ 53 67 68 ];
       };
     };
+
+    services.caddy = {
+      virtualHosts.${url}.extraConfig = ''
+        reverse_proxy http://localhost:8096
+        tls ${certloc}/cert.pem ${certloc}/key.pem {
+             protocols tls1.3
+           }
+      '';
+    };
+
+    services.homepage-dashboard.widgets = [{
+      type = "adguardhome";
+      url = "https://${url}";
+      user = "defaultmodel";
+      password = cfg.password;
+    }] ++ (config.services.homepage.dashboard.widgets or [ ]);
   };
 }
