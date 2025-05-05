@@ -4,7 +4,11 @@ let
   # Shorter name to access a final setting
   # All modules are under the custom attribute "def"
   cfg = config.def.paperless;
-in {
+  srv = config.services.paperless;
+  certloc = "/var/lib/acme/defaultmodel.eu.org";
+  url = "paperless.defaultmodel.eu.org";
+in
+{
   options.def.paperless = {
     enable = mkOption {
       default = false;
@@ -40,6 +44,26 @@ in {
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ config.services.paperless.port ];
+    ### REVERSE PROXY ###
+    services.caddy = {
+      virtualHosts.${url}.extraConfig = ''
+        reverse_proxy http://localhost:${toString srv.config.PORT}
+        tls ${certloc}/cert.pem ${certloc}/key.pem {
+          protocols tls1.3
+        }
+      '';
+    };
+
+    services.adguardhome.settings.dns.rewrites = [{
+      domain = url;
+      answer = config.networking.interfaces.ens18.ipv4;
+    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+
+    ### HOMEPAGE ###
+    services.homepage-dashboard.widgets = [{
+      type = "paperlessngx";
+      url = "https://${url}";
+      key = ""; # Complete it once miniflux generates it
+    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }

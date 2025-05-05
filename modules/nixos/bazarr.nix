@@ -7,7 +7,8 @@ let
   srv = config.services.bazarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "bazarr.defaultmodel.eu.org";
-in {
+in
+{
   options.def.bazarr = {
     enable = mkEnableOption "Bazarr subtitle manager";
     apiKeyFile = mkOption { type = types.path; };
@@ -20,14 +21,20 @@ in {
       openFirewall = true;
     };
 
-    # systemd.services.bazarr = {
-    #   serviceConfig = {
-    #     LoadCredential =
-    #       [ "api_key:${config.age.secrets.bazarr_api_key.path}" ];
-    #     Environment = "BAZARR__AUTH__APIKEY=%d/api_key";
-    #   };
-    # };
+    # The same could be done via services.radarr.environmentFiles
+    # But this solution for every service rather than just the *arrs
+    systemd.services.bazarr = {
+      serviceConfig = {
+        LoadCredential = [
+          "key:${cfg.authFile}"
+        ];
+        Environment = [
+          "BAZARR__AUTH__APIKEY=%d/key"
+        ];
+      };
+    };
 
+    ### REVERSE PROXY ###
     services.caddy = {
       virtualHosts.${url}.extraConfig = ''
         reverse_proxy http://localhost:${toString srv.listenPort}
@@ -42,10 +49,23 @@ in {
       answer = config.networking.interfaces.ens18.ipv4;
     }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
 
-    # services.homepage-dashboard.widgets = [{
-    # type = "bazarr";
-    # url = "https://${url}";
-    # key = ;
-    # }] ++ (config.services.homepage.dashboard.widgets or [ ]);
+    ### HOMEPAGE ###
+    systemd.services.homepage-dashboard = {
+      serviceConfig = {
+        LoadCredential = [
+          "key:${cfg.authFile}"
+        ];
+        Environment = [
+          "HOMEPAGE_FILE_BAZARR_APIKEY=%d/key"
+        ];
+      };
+    };
+
+    services.homepage-dashboard.widgets = [{
+      type = "bazarr";
+      url = "https://${url}";
+      # This will be replace by the env var we set above with systemd credentials
+      key = "{{HOMEPAGE_FILE_BAZARR_APIKEY}}";
+    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }

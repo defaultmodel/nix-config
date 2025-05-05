@@ -6,7 +6,8 @@ let
   cfg = config.def.torrent;
   srv = config.services.transmission;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
-in {
+in
+{
   options.def.torrent = {
     enable = mkEnableOption "Torrent downloader";
     mediaDir = mkOption { type = types.path; };
@@ -95,16 +96,27 @@ in {
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ cfg.guiPort ];
-    networking.firewall.allowedUDPPorts = [ cfg.guiPort ];
-
+    ### REVERSE PROXY ###
     services.caddy = {
-      virtualHosts."torrent.defaultmodel.eu.org".extraConfig = ''
+      virtualHosts.${url}.extraConfig = ''
         reverse_proxy http://localhost:${toString srv.settings.rpc-port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }
       '';
     };
+
+    services.adguardhome.settings.dns.rewrites = [{
+      domain = url;
+      answer = config.networking.interfaces.ens18.ipv4;
+    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+
+    ### HOMEPAGE ###
+    services.homepage-dashboard.widgets = [{
+      type = "transmission";
+      url = "https://${url}";
+      username = "";
+      password = "";
+    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }

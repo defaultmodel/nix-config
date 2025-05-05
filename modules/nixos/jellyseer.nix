@@ -6,7 +6,9 @@ let
   cfg = config.def.jellyseerr;
   srv = config.services.jellyseerr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
-in {
+  url = "jellyseer.defaultmodel.eu.org";
+in
+{
   options.def.jellyseerr = {
     enable = mkEnableOption "Jellyseerr media requester";
   };
@@ -14,13 +16,26 @@ in {
   config = mkIf cfg.enable {
     services.jellyseerr = { enable = true; };
 
+    ### REVERSE PROXY ###
     services.caddy = {
-      virtualHosts."jellyseer.defaultmodel.eu.org".extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.port}
+      virtualHosts.${url}.extraConfig = ''
+        reverse_proxy http://localhost:${toString srv.settings.server.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }
       '';
     };
+
+    services.adguardhome.settings.dns.rewrites = [{
+      domain = url;
+      answer = config.networking.interfaces.ens18.ipv4;
+    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+
+    ### HOMEPAGE ###
+    services.homepage-dashboard.widgets = [{
+      type = "jellyseer";
+      url = "https://${url}";
+      key = ""; # Complete it once jellyseer generates it
+    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }
