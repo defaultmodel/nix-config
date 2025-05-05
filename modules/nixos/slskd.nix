@@ -6,7 +6,9 @@ let
   cfg = config.def.slskd;
   srv = config.services.slskd;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
-in {
+  url = "slskd.defaultmodel.eu.org";
+in
+{
   options.def.slskd = {
     enable = mkEnableOption "Slskd music downloader";
     mediaDir = mkOption { type = types.path; };
@@ -65,13 +67,27 @@ in {
       };
     };
 
+    ### REVERSE PROXY ###
     services.caddy = {
-      virtualHosts."slskd.defaultmodel.eu.org".extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.settings.web.port}
+      virtualHosts.${url}.extraConfig = ''
+        reverse_proxy http://localhost:${toString srv.settings.server.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }
       '';
     };
+
+    services.adguardhome.settings.dns.rewrites = [{
+      domain = url;
+      answer = config.networking.interfaces.ens18.ipv4;
+    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+
+    ### HOMEPAGE ###
+    services.homepage-dashboard.services = [{
+      type = "radarr";
+      url = "https://${url}";
+      # This will be replace by the env var we set above with systemd credentials
+      key = "{{HOMEPAGE_FILE_RADARR_APIKEY}}";
+    }] ++ (config.services.homepage-dashboard.services or [ ]);
   };
 }
