@@ -49,6 +49,18 @@ in {
     cloudflareKeyFile = config.age.secrets.cloudflare-dns-api-key.path;
   };
 
+  ### RSS ###
+  age.secrets.rss-credentials = {
+    file = ../../../../secrets/rss-credentials.age;
+    mode = "400";
+    owner = "rss";
+  };
+
+  def.rss = {
+    enable = true;
+    authFile = config.age.secrets.rss-credentials.path;
+  };
+
   ### VAULTWARDEN ###
   def.vaultwarden.enable = true;
 
