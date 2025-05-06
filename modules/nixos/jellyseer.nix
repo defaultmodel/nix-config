@@ -7,8 +7,7 @@ let
   srv = config.services.jellyseerr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "jellyseer.defaultmodel.eu.org";
-in
-{
+in {
   options.def.jellyseerr = {
     enable = mkEnableOption "Jellyseerr media requester";
   };
@@ -19,7 +18,7 @@ in
     ### REVERSE PROXY ###
     services.caddy = {
       virtualHosts.${url}.extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.settings.server.port}
+        reverse_proxy http://localhost:${toString srv.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }

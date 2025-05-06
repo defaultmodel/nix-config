@@ -5,19 +5,16 @@ let
   # All modules are under the custom attribute "def"
   cfg = config.def.immich;
   srv = config.services.immich;
-  certloc = "/var/acme/defaultmodel.eu.org";
+  certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "immich.defaultmodel.eu.org";
-in
-{
+in {
   options.def.immich = {
     enable = mkOption {
       default = false;
       type = types.bool;
     };
 
-    photoFolder = mkOption {
-      type = types.path;
-    };
+    photoFolder = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
@@ -26,10 +23,6 @@ in
       host = "0.0.0.0";
       port = 2283;
     };
-
-    networking.firewall.allowedTCPPorts = [
-      cfg.port
-    ];
 
     ### REVERSE PROXY ###
     services.caddy = {

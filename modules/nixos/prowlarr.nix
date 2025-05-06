@@ -7,11 +7,10 @@ let
   srv = config.services.prowlarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "prowlarr.defaultmodel.eu.org";
-in
-{
+in {
   options.def.prowlarr = {
     enable = mkEnableOption "Prowlarr indexer manager";
-    authFile = mkOption { type = types.path; };
+    apiKeyFile = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
@@ -24,15 +23,10 @@ in
     # But this solution for every service rather than just the *arrs
     systemd.services.prowlarr = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "PROWLARR__AUTH__APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "PROWLARR__AUTH__APIKEY=%d/key" ];
       };
     };
-
 
     ### REVERSE PROXY ###
     services.caddy = {
@@ -47,12 +41,8 @@ in
     ### HOMEPAGE ###
     systemd.services.homepage-dashboard = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "HOMEPAGE_FILE_PROWLARR_APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "HOMEPAGE_FILE_PROWLARR_APIKEY=%d/key" ];
       };
     };
 

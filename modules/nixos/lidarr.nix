@@ -7,8 +7,7 @@ let
   srv = config.services.lidarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "lidarr.defaultmodel.eu.org";
-in
-{
+in {
   options.def.lidarr = {
     enable = mkEnableOption "lidarr subtitle manager";
     apiKeyFile = mkOption { type = types.path; };
@@ -25,12 +24,8 @@ in
     # But this solution for every service rather than just the *arrs
     systemd.services.lidarr = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "LIDARR__AUTH__APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "LIDARR__AUTH__APIKEY=%d/key" ];
       };
     };
 
@@ -42,7 +37,7 @@ in
     ### REVERSE PROXY ###
     services.caddy = {
       virtualHosts.${url}.extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.listenPort}
+        reverse_proxy http://localhost:${toString srv.settings.server.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
              protocols tls1.3
            }
@@ -52,12 +47,8 @@ in
     ### HOMEPAGE ###
     systemd.services.homepage-dashboard = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "HOMEPAGE_FILE_LIDARR_APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "HOMEPAGE_FILE_LIDARR_APIKEY=%d/key" ];
       };
     };
 

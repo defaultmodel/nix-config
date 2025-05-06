@@ -7,8 +7,7 @@ let
   srv = config.services.slskd;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "slskd.defaultmodel.eu.org";
-in
-{
+in {
   options.def.slskd = {
     enable = mkEnableOption "Slskd music downloader";
     mediaDir = mkOption { type = types.path; };
@@ -70,7 +69,7 @@ in
     ### REVERSE PROXY ###
     services.caddy = {
       virtualHosts.${url}.extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.settings.server.port}
+        reverse_proxy http://localhost:${toString srv.settings.web.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }

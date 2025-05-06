@@ -21,6 +21,7 @@
     signal-desktop
     qbittorrent
     ragenix
+    borgbackup
   ];
 
   programs.fish = {

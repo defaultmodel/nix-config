@@ -6,8 +6,8 @@ let
   cfg = config.def.torrent;
   srv = config.services.transmission;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
-in
-{
+  url = "torrent.defaultmodel.eu.org";
+in {
   options.def.torrent = {
     enable = mkEnableOption "Torrent downloader";
     mediaDir = mkOption { type = types.path; };

@@ -7,8 +7,7 @@ let
   srv = config.services.paperless;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "paperless.defaultmodel.eu.org";
-in
-{
+in {
   options.def.paperless = {
     enable = mkOption {
       default = false;
@@ -47,7 +46,7 @@ in
     ### REVERSE PROXY ###
     services.caddy = {
       virtualHosts.${url}.extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.config.PORT}
+        reverse_proxy http://localhost:${toString srv.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }

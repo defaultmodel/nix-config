@@ -53,7 +53,7 @@ in {
   age.secrets.rss-credentials = {
     file = ../../../../secrets/rss-credentials.age;
     mode = "400";
-    owner = "rss";
+    owner = "miniflux";
   };
 
   def.rss = {

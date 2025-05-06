@@ -7,11 +7,10 @@ let
   srv = config.services.radarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "radarr.defaultmodel.eu.org";
-in
-{
+in {
   options.def.radarr = {
     enable = mkEnableOption "Radarr movie manager";
-    authFile = mkOption { type = types.path; };
+    apiKeyFile = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
@@ -25,12 +24,8 @@ in
     # But this solution for every service rather than just the *arrs
     systemd.services.radarr = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "RADARR__AUTH__APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "RADARR__AUTH__APIKEY=%d/key" ];
       };
     };
 
@@ -52,12 +47,8 @@ in
     ### HOMEPAGE ###
     systemd.services.homepage-dashboard = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "HOMEPAGE_FILE_RADARR_APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "HOMEPAGE_FILE_RADARR_APIKEY=%d/key" ];
       };
     };
 

@@ -7,11 +7,10 @@ let
   srv = config.services.sonarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "sonarr.defaultmodel.eu.org";
-in
-{
+in {
   options.def.sonarr = {
     enable = mkEnableOption "Sonarr movie manager";
-    authFile = mkOption { type = types.path; };
+    apiKeyFile = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
@@ -25,15 +24,10 @@ in
     # But this solution for every service rather than just the *arrs
     systemd.services.sonarr = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "SONARR__AUTH__APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "SONARR__AUTH__APIKEY=%d/key" ];
       };
     };
-
 
     ### REVERSE PROXY ###
     services.caddy = {
@@ -53,12 +47,8 @@ in
     ### HOMEPAGE ###
     systemd.services.homepage-dashboard = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "HOMEPAGE_FILE_SONARR_APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "HOMEPAGE_FILE_SONARR_APIKEY=%d/key" ];
       };
     };
 

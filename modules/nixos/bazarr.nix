@@ -7,8 +7,7 @@ let
   srv = config.services.bazarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "bazarr.defaultmodel.eu.org";
-in
-{
+in {
   options.def.bazarr = {
     enable = mkEnableOption "Bazarr subtitle manager";
     apiKeyFile = mkOption { type = types.path; };
@@ -25,12 +24,8 @@ in
     # But this solution for every service rather than just the *arrs
     systemd.services.bazarr = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "BAZARR__AUTH__APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "BAZARR__AUTH__APIKEY=%d/key" ];
       };
     };
 
@@ -52,12 +47,8 @@ in
     ### HOMEPAGE ###
     systemd.services.homepage-dashboard = {
       serviceConfig = {
-        LoadCredential = [
-          "key:${cfg.authFile}"
-        ];
-        Environment = [
-          "HOMEPAGE_FILE_BAZARR_APIKEY=%d/key"
-        ];
+        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
+        Environment = [ "HOMEPAGE_FILE_BAZARR_APIKEY=%d/key" ];
       };
     };
 

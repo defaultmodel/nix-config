@@ -26,30 +26,50 @@ in {
 
   ### ARR ###
 
-  def.bazarr.enable = true;
-  def.prowlarr.enable = true;
+  age.secrets.bazarr-api-key = {
+    file = ../../../../secrets/bazarr-api-key.age;
+    owner = "bazarr";
+  };
+  def.bazarr = {
+    enable = true;
+    apiKeyFile = config.age.secrets.bazarr-api-key.path;
+  };
+
+  age.secrets.prowlarr-api-key = {
+    file = ../../../../secrets/prowlarr-api-key.age;
+    owner = "prowlarr";
+  };
+  def.prowlarr = {
+    enable = true;
+    apiKeyFile = config.age.secrets.prowlarr-api-key.path;
+  };
 
   age.secrets.radarr-api-key = {
-    file = ../../../../secrets/wg-conf.age;
-    mode = "400";
+    file = ../../../../secrets/radarr-api-key.age;
     owner = "radarr";
   };
   def.radarr = {
     enable = true;
-    authFile = config.age.secrets.radarr-api-key.path;
+    apiKeyFile = config.age.secrets.radarr-api-key.path;
   };
 
   age.secrets.sonarr-api-key = {
-    file = ../../../../secrets/wg-conf.age;
-    mode = "400";
+    file = ../../../../secrets/sonarr-api-key.age;
     owner = "sonarr";
   };
   def.sonarr = {
     enable = true;
-    authFile = config.age.secrets.sonarr-api-key.path;
+    apiKeyFile = config.age.secrets.sonarr-api-key.path;
   };
 
-  def.lidarr.enable = false;
+  age.secrets.lidarr-api-key = {
+    file = ../../../../secrets/lidarr-api-key.age;
+    owner = "lidarr";
+  };
+  def.lidarr = {
+    enable = true;
+    apiKeyFile = config.age.secrets.lidarr-api-key.path;
+  };
 
   ### DOWNLOADERS ###
 

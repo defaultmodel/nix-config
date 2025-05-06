@@ -34,5 +34,6 @@
     ./usenet.nix
     ./slskd.nix
     ./reverse-proxy.nix
+    ./rss.nix
   ];
 }

@@ -7,13 +7,10 @@ let
   srv = config.services.miniflux;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "rss.defaultmodel.eu.org";
-in
-{
+in {
   options.def.rss = {
     enable = mkEnableOption "RSS feed read";
-    authFile = mkOption {
-      type = types.path;
-    };
+    authFile = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
