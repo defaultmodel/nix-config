@@ -13,13 +13,23 @@ in {
 
   networking = {
     hostName = "rhodes";
-    interfaces.enp2s0.ipv4.addresses = [{
+    interfaces.bond0.ipv4.addresses = [{
       address = "192.168.1.30";
       prefixLength = 24;
     }];
     defaultGateway = {
       address = "192.168.1.1";
-      interface = "enp2s0";
+      interface = "bond0";
+    };
+    bonds = {
+      bond0 = {
+        interfaces = [ "enp2s0" "enp3s0" ];
+        driverOptions = {
+          miimon = "100"; # Monitor MII link every 100ms
+          mode = "802.3ad";
+          xmit_hash_policy = "layer3+4"; # IP and TCP/UDP hash
+        };
+      };
     };
   };
 
