@@ -2,8 +2,8 @@
   disko.devices = {
     disk = {
       main = {
-        device = "/dev/sda";
         type = "disk";
+        device = "/dev/nvme0n1";
         content = {
           type = "gpt";
           partitions = {
@@ -42,6 +42,90 @@
                   };
                 };
               };
+            };
+          };
+        };
+      };
+      hdd1 = {
+        type = "disk";
+        device = "/dev/sda";
+        content = {
+          type = "gpt";
+          partitions = {
+            mdadm = {
+              size = "100%";
+              content = {
+                type = "mdraid";
+                name = "raid5";
+              };
+            };
+          };
+        };
+      };
+      hdd2 = {
+        type = "disk";
+        device = "/dev/sdb";
+        content = {
+          type = "gpt";
+          partitions = {
+            mdadm = {
+              size = "100%";
+              content = {
+                type = "mdraid";
+                name = "raid5";
+              };
+            };
+          };
+        };
+      };
+      hdd3 = {
+        type = "disk";
+        device = "/dev/sdc";
+        content = {
+          type = "gpt";
+          partitions = {
+            mdadm = {
+              size = "100%";
+              content = {
+                type = "mdraid";
+                name = "raid5";
+              };
+            };
+          };
+        };
+      };
+      hdd4 = {
+        type = "disk";
+        device = "/dev/sdd";
+        content = {
+          type = "gpt";
+          partitions = {
+            mdadm = {
+              size = "100%";
+              content = {
+                type = "mdraid";
+                name = "raid5";
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+  mdadm = {
+    raid5 = {
+      type = "mdadm";
+      level = 5;
+      content = {
+        type = "gpt";
+        partitions = {
+          primary = {
+            size = "100%";
+            content = {
+              type = "btrfs";
+              extraArgs = [ "-f" ]; # Override existing partition
+              mountpoint = "/data";
+              mountOptions = [ "compress=zstd" "noatime" ];
             };
           };
         };
