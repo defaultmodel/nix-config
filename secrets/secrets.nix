@@ -4,7 +4,7 @@ let
   defaultmodel-wolfcall =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtsgdnGkeAWcGjsLyQRhCJDJyfwlD0euUW37u8ou6px";
   root-rhodes =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwGBa6jJZKe3TvA4wqvXu1T4I9/53Ouqi0gKHs6RDZ7";
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAO/RjuSJEP2Ne0sr4q8PQdXUoGuZFTZYtvY/7JsJVan";
 in {
   "paperless-admin-password.age".publicKeys =
     [ defaultmodel-wolfcall root-rhodes ];
