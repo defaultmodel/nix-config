@@ -5,6 +5,7 @@ in {
   imports = [
     ../default.nix # Common config for all local servers
     ./disk-config.nix
+    ./hardware-configuration.nix
 
     ./nas.nix
     ./media.nix
@@ -12,13 +13,13 @@ in {
 
   networking = {
     hostName = "rhodes";
-    interfaces.ens18.ipv4.addresses = [{
+    interfaces.enp2s0.ipv4.addresses = [{
       address = "192.168.1.30";
       prefixLength = 24;
     }];
     defaultGateway = {
       address = "192.168.1.1";
-      interface = "ens18";
+      interface = "enp2s0";
     };
   };
 

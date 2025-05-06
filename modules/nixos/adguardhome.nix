@@ -101,7 +101,7 @@ in {
           cache_time = 30;
           rewrites = [{
             domain = url;
-            answer = config.networking.interfaces.ens18.ipv4;
+            answer = config.networking.interfaces.enp2s0.ipv4;
           }];
           blocked_services = [ ];
           upstream_timeout = "10s";
@@ -167,7 +167,7 @@ in {
         ];
         dhcp = {
           enabled = true;
-          interface_name = "ens18";
+          interface_name = "enp2s0";
           local_domain_name = "lan";
           dhcpv4 = {
             gateway_ip = "192.168.1.1";

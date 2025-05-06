@@ -55,7 +55,7 @@ in {
 
     services.adguardhome.settings.dns.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.ens18.ipv4;
+      answer = config.networking.interfaces.enp2s0.ipv4;
     }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
 
     ### HOMEPAGE ###

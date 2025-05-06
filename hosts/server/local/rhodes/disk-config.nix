@@ -96,7 +96,7 @@
       };
       hdd4 = {
         type = "disk";
-        device = "/dev/sdd";
+        device = "/dev/sdf";
         content = {
           type = "gpt";
           partitions = {
@@ -111,21 +111,21 @@
         };
       };
     };
-  };
-  mdadm = {
-    raid5 = {
-      type = "mdadm";
-      level = 5;
-      content = {
-        type = "gpt";
-        partitions = {
-          primary = {
-            size = "100%";
-            content = {
-              type = "btrfs";
-              extraArgs = [ "-f" ]; # Override existing partition
-              mountpoint = "/data";
-              mountOptions = [ "compress=zstd" "noatime" ];
+    mdadm = {
+      raid5 = {
+        type = "mdadm";
+        level = 5;
+        content = {
+          type = "gpt";
+          partitions = {
+            primary = {
+              size = "100%";
+              content = {
+                type = "btrfs";
+                extraArgs = [ "-f" ]; # Override existing partition
+                mountpoint = "/data";
+                mountOptions = [ "compress=zstd" "noatime" ];
+              };
             };
           };
         };
