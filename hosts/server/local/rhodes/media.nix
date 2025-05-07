@@ -71,6 +71,12 @@ in {
     apiKeyFile = config.age.secrets.lidarr-api-key.path;
   };
 
+  def.recyclarr = {
+    enable = true;
+    radarrApiKeyFile = config.age.secrets.radarr-api-key.path;
+    sonarrApiKeyFile = config.age.secrets.sonarr-api-key.path;
+  };
+
   ### DOWNLOADERS ###
 
   age.secrets.torrent-credentials = {
