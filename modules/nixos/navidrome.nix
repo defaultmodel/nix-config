@@ -7,8 +7,7 @@ let
   srv = config.services.navidrome;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "navidrome.defaultmodel.eu.org";
-in
-{
+in {
   options.def.navidrome = {
     enable = mkOption {
       default = false;
@@ -37,18 +36,18 @@ in
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### HOMEPAGE ###
-    services.homepage-dashboard.widgets = [{
-      type = "navidrome";
-      url = "https://${url}";
-      user = ""; # Complete it once navidrome generates it
-      token = ""; # Complete it once navidrome generates it
-      salt = ""; # Complete it once navidrome generates it
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
+    def.homepage.categories."Media"."Navidrome" = {
+      icon = "navidrome.png";
+      description = "Music Streamer";
+      href = "https://${url}";
+    };
   };
 }

@@ -17,15 +17,7 @@ in {
     services.prowlarr = {
       enable = true;
       openFirewall = true;
-    };
-
-    # The same could be done via services.radarr.environmentFiles
-    # But this solution for every service rather than just the *arrs
-    systemd.services.prowlarr = {
-      serviceConfig = {
-        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-        Environment = [ "PROWLARR__AUTH__APIKEY=%d/key" ];
-      };
+      environmentFiles = [ cfg.apiKeyFile ];
     };
 
     ### REVERSE PROXY ###
@@ -39,18 +31,10 @@ in {
     };
 
     ### HOMEPAGE ###
-    systemd.services.homepage-dashboard = {
-      serviceConfig = {
-        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-        Environment = [ "HOMEPAGE_FILE_PROWLARR_APIKEY=%d/key" ];
-      };
+    def.homepage.categories."Arr*"."Prowlarr" = {
+      icon = "prowlarr.png";
+      description = "Indexer manager";
+      href = "https://${url}";
     };
-
-    services.homepage-dashboard.widgets = [{
-      type = "prowlarr";
-      url = "https://${url}";
-      # This will be replace by the env var we set above with systemd credentials
-      key = "{{HOMEPAGE_FILE_PROWLARR_APIKEY}}";
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }

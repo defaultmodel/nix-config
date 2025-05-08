@@ -7,13 +7,33 @@ let
   srv = config.services.homepage-dashboard;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "home.defaultmodel.eu.org";
-in
-{
-  options.def.homepage = { enable = mkEnableOption "Homepage"; };
+
+  # Define a type for a service entry
+  serviceType = lib.types.submodule {
+    options = {
+      icon = lib.mkOption { type = lib.types.str; };
+      description = lib.mkOption { type = lib.types.str; };
+      href = lib.mkOption { type = lib.types.str; };
+    };
+  };
+
+  # Define a type for a category (a set of service names → service config)
+  categoryType = lib.types.attrsOf serviceType;
+in {
+  options.def.homepage = {
+    enable = mkEnableOption "Homepage";
+    categories = lib.mkOption {
+      type = lib.types.attrsOf categoryType;
+      default = { };
+      description = "Services grouped by category name.";
+    };
+  };
 
   config = mkIf cfg.enable {
     services.homepage-dashboard = {
       enable = true;
+      openFirewall = true;
+
       settings = {
         title = "Rhodes";
         favicon = "https://huggingface.co/favicon.ico";
@@ -33,39 +53,43 @@ in
           };
         };
       };
+      # Convert the `categories` attrset into the `services` list format
+      # Defined like so :
+      # ```nix
+      # def.homepage.categories."categorie-name"."service-name" = {
+      #   icon = "...";
+      #   description = "...";
+      #   href = "...";
+      # };
+      # ```
+      services = lib.mapAttrsToList (name: services: {
+        "${name}" =
+          lib.mapAttrsToList (serviceName: cfg: { "${serviceName}" = cfg; })
+          services;
+      }) cfg.categories;
       bookmarks = [
         {
-          Dev = [
-            {
-              Github = [
-                {
-                  abbr = "GH";
-                  href = "https://github.com/";
-                  icon = "github.png";
-                }
-              ];
-            }
-          ];
+          Dev = [{
+            Github = [{
+              abbr = "GH";
+              href = "https://github.com/";
+              icon = "github.png";
+            }];
+          }];
         }
         {
-          Entertainment = [
-            {
-              YouTube = [
-                {
-                  abbr = "YT";
-                  href = "https://youtube.com/";
-                  icon = "reddit.png";
-                }
-              ];
-              Reddit = [
-                {
-                  abbr = "YT";
-                  href = "https://reddit.com/";
-                  icon = "reddit.png";
-                }
-              ];
-            }
-          ];
+          Entertainment = [{
+            YouTube = [{
+              abbr = "YT";
+              href = "https://youtube.com/";
+              icon = "reddit.png";
+            }];
+            Reddit = [{
+              abbr = "YT";
+              href = "https://reddit.com/";
+              icon = "reddit.png";
+            }];
+          }];
         }
       ];
       widgets = [
@@ -86,19 +110,26 @@ in
       ];
     };
 
+    systemd.services.homepage-dashboard.environment = {
+      # We can afford this because only our local network will have access
+      HOMEPAGE_ALLOWED_HOSTS = "*";
+    };
+
     ### REVERSE PROXY ###
     services.caddy = {
       virtualHosts."home.defaultmodel.eu.org".extraConfig = ''
-        reverse_proxy http://localhost:${toString srv.port}
+        reverse_proxy http://localhost:${toString srv.listenPort}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
           protocols tls1.3
         }
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
   };
 }

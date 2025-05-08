@@ -20,104 +20,93 @@ in {
       host = "0.0.0.0";
       port = 38916;
 
-      mutableSettings = true;
+      mutableSettings = false;
       allowDHCP = true;
       settings = {
+        http = {
+          address = "0.0.0.0:3000";
+          session_ttl = "720h";
+          enable_json_api = true;
+        };
         users = [{
           name = "defaultmodel";
           password = cfg.password;
         }];
         auth_attempts = 5;
         block_auth_min = 15;
-        http_proxy = "";
-        language = "";
-        theme = "auto";
-        debug_pprof = false;
-        web_session_ttl = 720;
         dns = {
+          # General settings
           bind_hosts = [ "0.0.0.0" ];
           port = 53;
-          enable_doh_json = true;
-          enable_doh = true;
-          doh_port = 3000;
-          doh_path = "/dns-query";
           anonymize_client_ip = false;
+          # Anti-DNS amplification features
+          ratelimit = 50;
+          refuse_any = true;
+          # Upstream DNS servers settings:
+          upstream_dns = [
+            "194.242.2.4#base.dns.mullvad.net"
+            "194.242.2.2#dns.mullvad.net"
+            "193.110.81.0#dns0.eu"
+            "185.253.5.0$dns0.eu"
+          ];
+          bootstrap_dns = [ "1.1.1.1" "8.8.8.8" "2606:4700:4700::1111" ];
+          fallback_dns = [ "1.1.1.1" "8.8.8.8" ];
+          upstream_mode = "load_balance";
+          fastest_timeout = "2s";
+          use_http3_upstreams = true;
+          use_dns64 = false;
+          dns64_prefixes = [ ];
+          # ECS settings
+          edns_client_subnet = {
+            custom_ip = "";
+            enabled = true;
+            use_custom = false;
+          };
+          # Access settings
+          allowed_clients = [ ];
+          disallowed_clients = [ ];
+          blocked_hosts = [ ];
+          trusted_proxies = [ ];
+          # DNS cache settings
+          cache_size = 8388608;
+          cache_ttl_min = 60;
+          cache_ttl_max = 3600;
+          cache_optimistic = true;
+          # Other settings
+          bogus_nxdomain = [ ];
+          enable_dnssec = true;
+          aaaa_disabled = false;
+          cache_time = 600;
+          max_goroutines = 1000;
+          handle_ddr = true;
+          ipset = [ ];
+          upstream_timeout = "10s";
+          serve_http3 = true;
+          theme = "auto";
+        };
+        filtering = {
           protection_enabled = true;
+          filtering_enabled = true;
           blocking_mode = "default";
           blocking_ipv4 = "";
           blocking_ipv6 = "";
           blocked_response_ttl = 10;
           parental_block_host = "family-block.dns.adguard.com";
           safebrowsing_block_host = "standard-block.dns.adguard.com";
-          ratelimit = 50;
-          ratelimit_whitelist = [ ];
-          refuse_any = true;
-          upstream_dns = [
-            "194.242.2.4#base.dns.mullvad.net"
-            "194.242.2.2#dns.mullvad.net"
-          ];
-          bootstrap_dns = [ "1.1.1.1" "8.8.8.8" "2606:4700:4700::1111" ];
-          all_servers = false;
-          fastest_addr = true;
-          fastest_timeout = "2s";
-          allowed_clients = [ ];
-          disallowed_clients = [ ];
-          blocked_hosts = [
-            # "version.bind"
-            # "id.server"
-            # "hostname.bind"
-          ];
-          trusted_proxies = [
-            # "127.0.0.0/8"
-            # "::1/128"
-            # "10.0.0.0/8"
-            # "172.16.0.0/12"
-            # "192.168.0.0/16"
-          ];
-          cache_size = 8388608;
-          cache_ttl_min = 60;
-          cache_ttl_max = 3600;
-          cache_optimistic = true;
-          bogus_nxdomain = [ ];
-          aaaa_disabled = false;
-          enable_dnssec = false;
-          edns_client_subnet = {
-            custom_ip = "";
-            enabled = true;
-            use_custom = false;
-          };
-          max_goroutines = 1000;
-          handle_ddr = true;
-          ipset = [ ];
-          ipset_file = "";
-          filtering_enabled = true;
-          filters_update_interval = 24;
           parental_enabled = false;
           safesearch_enabled = false;
           safebrowsing_enabled = false;
           safebrowsing_cache_size = 1048576;
           safesearch_cache_size = 1048576;
           parental_cache_size = 1048576;
-          cache_time = 30;
           rewrites = [{
             domain = url;
-            answer = config.networking.interfaces.bond0.ipv4;
+            answer = (builtins.elemAt
+              (config.networking.interfaces.bond0.ipv4.addresses) 0).address;
           }];
-          blocked_services = [ ];
-          upstream_timeout = "10s";
-          private_networks = [ ];
-          use_private_ptr_resolvers = true;
-          local_ptr_upstreams = [ ];
-          use_dns64 = false;
-          dns64_prefixes = [ ];
-          serve_http3 = true;
-          use_http3_upstreams = true;
-          querylog_enabled = true;
-        };
-        http = {
-          address = "0.0.0.0:3000";
-          session_ttl = "720h";
-          enable_json_api = true;
+          cache_time = 30;
+          filters_update_interval = 24;
+          # blocked_services = [ ];
         };
         querylog = {
           enabled = true;
@@ -186,6 +175,7 @@ in {
           };
         };
         clients = {
+          persistent = [ ];
           runtime_sources = {
             whois = true;
             arp = true;
@@ -193,7 +183,6 @@ in {
             dhcp = true;
             hosts = true;
           };
-          persistent = [ ];
         };
         log = {
           file = "syslog";
@@ -210,18 +199,18 @@ in {
 
     services.caddy = {
       virtualHosts.${url}.extraConfig = ''
-        reverse_proxy http://localhost:8096
+        reverse_proxy http://localhost:${toString srv.port}
         tls ${certloc}/cert.pem ${certloc}/key.pem {
              protocols tls1.3
            }
       '';
     };
 
-    services.homepage-dashboard.widgets = [{
-      type = "adguardhome";
-      url = "https://${url}";
-      user = "defaultmodel";
-      password = cfg.password;
-    }] ++ (config.services.homepage.dashboard.widgets or [ ]);
+    ### HOMEPAGE ###
+    def.homepage.categories."Other"."AdguardHome" = {
+      icon = "adguard-home.png";
+      description = "Local DNS resolver";
+      href = "https://${url}";
+    };
   };
 }

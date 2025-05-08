@@ -18,15 +18,7 @@ in {
       enable = true;
       group = "media";
       openFirewall = true;
-    };
-
-    # The same could be done via services.radarr.environmentFiles
-    # But this solution for every service rather than just the *arrs
-    systemd.services.radarr = {
-      serviceConfig = {
-        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-        Environment = [ "RADARR__AUTH__APIKEY=%d/key" ];
-      };
+      environmentFiles = [ cfg.apiKeyFile ];
     };
 
     ### REVERSE PROXY ###
@@ -39,24 +31,18 @@ in {
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### HOMEPAGE ###
-    systemd.services.homepage-dashboard = {
-      serviceConfig = {
-        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-        Environment = [ "HOMEPAGE_FILE_RADARR_APIKEY=%d/key" ];
-      };
+    def.homepage.categories."Arr*"."Radarr" = {
+      icon = "radarr.png";
+      description = "Movie manager";
+      href = "https://${url}";
     };
-
-    services.homepage-dashboard.widgets = [{
-      type = "radarr";
-      url = "https://${url}";
-      # This will be replace by the env var we set above with systemd credentials
-      key = "{{HOMEPAGE_FILE_RADARR_APIKEY}}";
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }

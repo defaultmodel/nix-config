@@ -34,17 +34,18 @@ in {
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### HOMEPAGE ###
-    services.homepage-dashboard.widgets = [{
-      type = "immich";
-      url = "https://${url}";
-      key = ""; # Complete it once immich generates it
-      version = 2;
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
+    def.homepage.categories."Media"."Immich" = {
+      icon = "immich.png";
+      description = "Photo manager";
+      href = "https://${url}";
+    };
   };
 }

@@ -42,22 +42,22 @@ in {
     file = ../../../../secrets/smb-credentials.age;
     mode = "440";
   };
-
   def.adguardhome = {
-    enable = false;
+    enable = true;
     password = "$2a$15$0kVcvZCskZQvHt.qfi.K/O2d1Iah/8V8S7gGaYXaKZxsQAHdU5nI.";
   };
 
+  def.homepage.enable = true;
+
   ### REVERSE-PROXY ###
-  age.secrets.cloudflare-dns-api-key = {
-    file = ../../../../secrets/cloudflare-dns-api-key.age;
+  age.secrets.dns-provider-api-key = {
+    file = ../../../../secrets/dns-provider-api-key.age;
     mode = "400";
     owner = "reverse-proxy";
   };
-
   def.reverse-proxy = {
     enable = true;
-    cloudflareKeyFile = config.age.secrets.cloudflare-dns-api-key.path;
+    DNSProviderApiKeyFile = config.age.secrets.dns-provider-api-key.path;
   };
 
   ### RSS ###
@@ -66,7 +66,6 @@ in {
     mode = "400";
     owner = "miniflux";
   };
-
   def.rss = {
     enable = true;
     authFile = config.age.secrets.rss-credentials.path;

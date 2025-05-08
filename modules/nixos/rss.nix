@@ -34,16 +34,18 @@ in {
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### HOMEPAGE ###
-    services.homepage-dashboard.widgets = [{
-      type = "miniflux";
-      url = "https://${url}";
-      key = ""; # Complete it once miniflux generates it
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
+    def.homepage.categories."Other"."Miniflux " = {
+      icon = "rsshub.png";
+      description = "RSS feed handler";
+      href = "https://${url}";
+    };
   };
 }

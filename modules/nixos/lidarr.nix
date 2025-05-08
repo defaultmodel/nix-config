@@ -18,21 +18,15 @@ in {
       enable = true;
       group = "media";
       openFirewall = true;
+      environmentFiles = [ cfg.apiKeyFile ];
     };
 
-    # The same could be done via services.radarr.environmentFiles
-    # But this solution for every service rather than just the *arrs
-    systemd.services.lidarr = {
-      serviceConfig = {
-        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-        Environment = [ "LIDARR__AUTH__APIKEY=%d/key" ];
-      };
-    };
-
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### REVERSE PROXY ###
     services.caddy = {
@@ -45,18 +39,10 @@ in {
     };
 
     ### HOMEPAGE ###
-    systemd.services.homepage-dashboard = {
-      serviceConfig = {
-        LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-        Environment = [ "HOMEPAGE_FILE_LIDARR_APIKEY=%d/key" ];
-      };
+    def.homepage.categories."Arr*"."Lidarr" = {
+      icon = "lidarr.png";
+      description = "Music manager";
+      href = "https://${url}";
     };
-
-    services.homepage-dashboard.widgets = [{
-      type = "lidarr";
-      url = "https://${url}";
-      # This will be replace by the env var we set above with systemd credentials
-      key = "{{HOMEPAGE_FILE_LIDARR_APIKEY}}";
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
   };
 }

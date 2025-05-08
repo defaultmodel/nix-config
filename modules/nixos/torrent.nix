@@ -106,17 +106,18 @@ in {
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### HOMEPAGE ###
-    services.homepage-dashboard.widgets = [{
-      type = "transmission";
-      url = "https://${url}";
-      username = "";
-      password = "";
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
+    def.homepage.categories."Downloaders"."Transmission" = {
+      icon = "transmission.png";
+      description = "Torrent downloader";
+      href = "https://${url}";
+    };
   };
 }

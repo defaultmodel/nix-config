@@ -13,7 +13,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.jellyseerr = { enable = true; };
+    services.jellyseerr = {
+      enable = true;
+      openFirewall = true;
+    };
 
     ### REVERSE PROXY ###
     services.caddy = {
@@ -25,16 +28,18 @@ in {
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
     ### HOMEPAGE ###
-    services.homepage-dashboard.widgets = [{
-      type = "jellyseer";
-      url = "https://${url}";
-      key = ""; # Complete it once jellyseer generates it
-    }] ++ (config.services.homepage-dashboard.widgets or [ ]);
+    def.homepage.categories."Media"."Jellyseer" = {
+      icon = "jellyseerr.png";
+      description = "Request manager";
+      href = "https://${url}";
+    };
   };
 }

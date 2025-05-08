@@ -22,7 +22,7 @@
     ./sound.nix
     ./music-player.nix
     ./jellyfin.nix
-    ./jellyseer.nix
+    ./jellyseerr.nix
     ./navidrome.nix
     ./bazarr.nix
     ./prowlarr.nix
@@ -35,6 +35,7 @@
     ./slskd.nix
     ./reverse-proxy.nix
     ./rss.nix
+    ./homepage.nix
     ./bluetooth.nix
   ];
 }

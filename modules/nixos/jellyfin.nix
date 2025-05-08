@@ -38,16 +38,19 @@ in {
       '';
     };
 
-    services.adguardhome.settings.dns.rewrites = [{
+    services.adguardhome.settings.filtering.rewrites = [{
       domain = url;
-      answer = config.networking.interfaces.bond0.ipv4;
-    }] ++ (config.services.adguardhome.settings.dns.rewrites or [ ]);
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
 
-    # services.homepage-dashboard.widgets = [{
-    #   type = "jellyfin";
-    #   url = "https://${url}";
-    #   key = "";
-    # }] ++ (config.services.homepage.dashboard.widgets or [ ]);
+    ### HOMEPAGE ###
+    def.homepage.categories."Media"."Jellyfin" = {
+      icon = "jellyfin.png";
+      description = "Media streamer";
+      href = "https://${url}";
+    };
   };
 }
 
