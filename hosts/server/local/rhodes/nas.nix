@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
   # User Authentication
   # For a user called my_user to be authenticated on the samba server, 
   # you must add their password using: `smbpasswd -a my_user`
@@ -15,7 +14,7 @@
         "netbios name" = config.networking.hostName;
         "security" = "user";
         "use sendfile" = "yes";
-        "hosts allow" = "192.168.0. 127.0.0.1 localhost";
+        "hosts allow" = "192.168.1. 127.0.0.1 localhost";
         "hosts deny" = "0.0.0.0/0";
         "guest account" = "nobody";
         "map to guest" = "bad user";
@@ -55,14 +54,6 @@
       };
       "soulseek" = {
         "path" = "/mnt/shares/data/soulseek";
-        "browseable" = "no";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-      };
-      "media" = {
-        "path" = "/mnt/shares/data/media";
         "browseable" = "no";
         "read only" = "no";
         "guest ok" = "no";
