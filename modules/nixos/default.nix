@@ -35,5 +35,6 @@
     ./slskd.nix
     ./reverse-proxy.nix
     ./rss.nix
+    ./bluetooth.nix
   ];
 }

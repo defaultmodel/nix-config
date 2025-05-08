@@ -11,6 +11,8 @@
     latestGenerationMax = 20;
   };
 
+  def.bluetooth.enable = true;
+
   def.sound.enable = true;
 
   def.locale.enable = true;
