@@ -1,5 +1,5 @@
 { config, ... }:
-let mediaDir = "/mnt/shares/data";
+let mediaDir = "/data";
 in {
 
   imports = [

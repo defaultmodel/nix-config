@@ -18,9 +18,9 @@ in {
     systemd.services.jellyfin.serviceConfig.IOSchedulingPriority = 0;
 
     systemd.tmpfiles.rules = [
-      "d '${cfg.mediaDir}/media/shows'        0775 ${srv.user} ${srv.group} - -"
-      "d '${cfg.mediaDir}/media/movies'       0775 ${srv.user} ${srv.group} - -"
-      "d '${cfg.mediaDir}/media/music'        0775 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/shows'        0775 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/movies'       0775 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/music'        0775 ${srv.user} ${srv.group} - -"
     ];
 
     services.jellyfin = {

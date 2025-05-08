@@ -1,5 +1,5 @@
 { config, ... }:
-let mediaDir = "/mnt/shares/data";
+let mediaDir = "/data";
 in {
 
   age.secrets.wg-conf = { file = ../../../../secrets/wg-conf.age; };
@@ -116,7 +116,7 @@ in {
   def.beets = {
     enable = true;
     importPaths = [ "/data/soulseek/complete" "/data/torrent/music" ];
-    mediaDir = "/data/media/music";
+    mediaDir = "${mediaDir}/media/music";
   };
 }
 
