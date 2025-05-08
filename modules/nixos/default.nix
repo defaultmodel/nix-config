@@ -37,5 +37,6 @@
     ./rss.nix
     ./homepage.nix
     ./bluetooth.nix
+    ./beets.nix
   ];
 }

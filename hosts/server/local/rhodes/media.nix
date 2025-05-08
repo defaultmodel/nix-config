@@ -14,6 +14,7 @@ in {
   users.groups.media = { };
 
   ### MEDIA ###
+
   def.jellyfin = {
     enable = true;
     mediaDir = "${mediaDir}/media";
@@ -109,6 +110,13 @@ in {
     enable = true;
     mediaDir = mediaDir;
     authFile = config.age.secrets.slskd-credentials.path;
+  };
+
+  ### OTHERS ###
+  def.beets = {
+    enable = true;
+    importPaths = [ "/data/soulseek/complete" "/data/torrent/music" ];
+    mediaDir = "/data/media/music";
   };
 }
 

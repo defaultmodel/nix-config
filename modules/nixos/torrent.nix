@@ -52,7 +52,6 @@ in {
       isSystemUser = true;
       group = "media";
     };
-    users.groups.torrent = { };
 
     services.transmission = {
       enable = true;
