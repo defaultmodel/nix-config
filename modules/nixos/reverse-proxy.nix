@@ -8,21 +8,20 @@ let
 in {
   options.def.reverse-proxy = {
     enable = mkEnableOption "reverse proxy";
-    cloudflareKeyFile = mkOption { type = types.path; };
+    DNSProviderApiKeyFile = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
     users.users.reverse-proxy = {
       isSystemUser = true;
-      group = "media";
+      group = "reverse-proxy";
     };
     users.groups.reverse-proxy = { };
 
-    services.caddy = {
-      enable = true;
-      # package = pkgs.caddy-cloudflare;
-    };
+    services.caddy.enable = true;
+
     networking.firewall.allowedTCPPorts = [ 80 443 ];
+    networking.firewall.allowedUDPPorts = [ 80 443 ];
 
     security.acme = {
       acceptTerms = true;
@@ -31,10 +30,10 @@ in {
 
       certs."defaultmodel.eu.org" = {
         extraDomainNames = [ "*.defaultmodel.eu.org" ];
-        dnsProvider = "cloudflare";
+        dnsProvider = "desec";
         dnsResolver = "1.1.1.1:53";
         dnsPropagationCheck = true;
-        environmentFile = cfg.cloudflareKeyFile;
+        environmentFile = cfg.DNSProviderApiKeyFile;
       };
     };
   };

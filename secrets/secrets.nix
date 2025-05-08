@@ -12,8 +12,7 @@ in {
   "slskd-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "wg-conf.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "torrent-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
-  "cloudflare-dns-api-key.age".publicKeys =
-    [ defaultmodel-wolfcall root-rhodes ];
+  "dns-provider-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "rss-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "bazarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "radarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
