@@ -103,4 +103,27 @@ in {
     documentFolder = "${mediaDir}/media/documents";
     consumeFolder = "${config.services.paperless.dataDir}/consume";
   };
+
+  ### BACKUPS ###
+  age.secrets.hetzner-backup-passphrase = {
+    file = ../../../../secrets/hetzner-backup-passphrase.age;
+  };
+  age.secrets.hetzner-rhodes-ssh-key = {
+    file = ../../../../secrets/hetzner-rhodes-ssh-key.age;
+  };
+  def.backup = {
+    enable = true;
+    jobs = [
+      {
+        name = "hetzner";
+        settings = {
+          paths = [ "/var/lib" "/etc/ssh" "/data/media/music" "/data/photos" "/data/documents" ];
+          exclude = [ "/var/lib/docker" "/var/lib/systemd" ];
+          repo = "";
+          repoPassphraseFile = config.age.secrets.hetzner-rhodes-ssh-key;
+          repoSSHKeyFile = config.age.secrets.hetzner-backup-passphrase;
+        };
+      }
+    ];
+  };
 }

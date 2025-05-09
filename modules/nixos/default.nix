@@ -1,6 +1,6 @@
 {
   imports = [
-    ./borgbackup.nix
+    ./backup.nix
     ./adguardhome.nix
     ./immich.nix
     ./monitoring-client.nix
