@@ -28,10 +28,28 @@ in
 {
   options.def.backup = {
     enable = mkEnableOption "Enable automated backups";
+    pgBackup = mkEnableOption "Enable backup of postgresql instance";
+    pgBackupDir = mkOption {
+      type = types.path;
+    };
     jobs = mkBackupOption "List of backup jobs" (types.listOf types.attrs) [ ];
   };
 
   config = mkIf cfg.enable {
     services.borgbackup.jobs = mapAttrs (name: settings: defineBorgJob name settings) cfg.jobs;
+
+    services.postgresqlBackup = mkIf cfg.backupPGSQL {
+      enable = true;
+      location = cfg.pgBackupDir;
+      backupAll = true;
+      startAt = "daily";
+      compression = "zstd";
+      compressionLevel = 3;
+    };
+
+    systemd.tmpfiles.rules = [
+      "d ${backupDir} 0775 ${syncthingCfg.user} ${syncthingCfg.group}"
+    ];
+
   };
 }
