@@ -22,6 +22,7 @@
     qbittorrent
     ragenix
     borgbackup
+    vlc
   ];
 
   programs.fish = {
