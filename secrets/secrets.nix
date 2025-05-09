@@ -19,4 +19,6 @@ in {
   "sonarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "lidarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "prowlarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
+  "vaultwarden-admin-token.age".publicKeys =
+    [ defaultmodel-wolfcall root-rhodes ];
 }

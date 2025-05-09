@@ -72,7 +72,16 @@ in {
   };
 
   ### VAULTWARDEN ###
-  def.vaultwarden.enable = true;
+  age.secrets.vaultwarden-admin-token = {
+    file = ../../../../secrets/vaultwarden-admin-token.age;
+    mode = "440";
+    owner = "vaultwarden";
+    group = "vaultwarden";
+  };
+  def.vaultwarden = {
+    enable = true;
+    adminTokenFile = config.age.secrets.vaultwarden-admin-token.path;
+  };
 
   ### IMMICH ###
   def.immich = {
