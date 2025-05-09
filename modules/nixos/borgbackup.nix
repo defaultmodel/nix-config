@@ -1,79 +1,37 @@
 { config, lib, ... }:
+with lib;
+let
+  # Shorter name to access a final setting
+  cfg = config.def.backup;
+
+  # Helper function to define options
+  mkBackupOption = name: type: default: mkOption {
+    type = type;
+    default = default;
+    description = "Backup option: ${name}";
+  };
+
+  # Function to define a new BorgBackup job
+  defineBorgJob = name: settings: {
+    paths = settings.paths;
+    exclude = settings.exclude;
+    repo = settings.repo;
+    encryption = {
+      mode = "repokey-blake2";
+      passCommand = "cat ${settings.repoPassphraseFile}";
+    };
+    environment.BORG_RSH = "ssh -i ${settings.repoSSHKeyFile}";
+    compression = "auto,lzma";
+    startAt = "daily";
+  };
+in
 {
-  # options.def.borgbackup = {
-  #   enable = lib.mkOption {
-  #     default = false;
-  #     type = lib.types.bool;
-  #   };
-  #   jobs = lib.mkOption {
-  #     paths = lib.mkOption {
-  #       type = lib.pathList;
-  #       description = "Paths to backup";
-  #     };
-  #     exclude = lib.mkOption {
-  #       type = lib.strList;
-  #       default = [ ];
-  #       description = "Paths to exclude from backup";
-  #     };
-  #     encryption = lib.mkOption {
-  #       mode = lib.mkOption {
-  #         type = lib.str;
-  #         default = "repokey-blake2";
-  #         description = "Encryption mode";
-  #       };
-  #       passCommand = lib.mkOption {
-  #         type = lib.str;
-  #         description = "Command to retrieve the encryption passphrase";
-  #       };
-  #     };
-  #     repo = lib.mkOption {
-  #       type = lib.str;
-  #       description = "Borg repository URL";
-  #     };
-  #     compression = lib.mkOption {
-  #       type = lib.str;
-  #       default = "auto,zstd";
-  #       description = "Compression mode";
-  #     };
-  #     startAt = lib.mkOption {
-  #       type = lib.str;
-  #       default = "daily";
-  #       description = "Backup schedule";
-  #     };
+  options.def.backup = {
+    enable = mkEnableOption "Enable automated backups";
+    jobs = mkBackupOption "List of backup jobs" (types.listOf types.attrs) [ ];
+  };
 
-  #     prune = lib.mkOption {
-  #       keepDaily = lib.mkOption {
-  #         type = lib.int;
-  #         default = 7;
-  #         description = "Number of daily backups to keep";
-  #       };
-  #       keepWeekly = lib.mkOption {
-  #         type = lib.int;
-  #         default = 4;
-  #         description = "Number of weekly backups to keep";
-  #       };
-  #       keepMonthly = lib.mkOption {
-  #         type = lib.int;
-  #         default = 3;
-  #         description = "Number of monthly backups to keep";
-  #       };
-  #     };
-  #     description = "BorgBackup jobs configuration";
-  #   };
-  # };
-
-  # # Enable BorgBackup service
-  # services.borgbackup = {
-  #   enable = config.def.borgbackup.enable;
-  #   jobs = lib.mkIf (config.def.borgbackup.enable) {
-  #     inherit (config.def.borgbackup.jobs) paths exclude encryption repo compression startAt;
-
-  #     prune = {
-  #       keepDaily = config.def.borgbackup.jobs.prune.keepDaily;
-  #       keepWeekly = config.def.borgbackup.jobs.prune.keepWeekly;
-  #       keepMonthly = config.def.borgbackup.jobs.prune.keepMonthly;
-  #     };
-  #   };
-  # };
+  config = mkIf cfg.enable {
+    services.borgbackup.jobs = mapAttrs (name: settings: defineBorgJob name settings) cfg.jobs;
+  };
 }
-
