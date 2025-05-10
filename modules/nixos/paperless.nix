@@ -44,7 +44,6 @@ in {
       passwordFile = cfg.passwordFile;
 
       consumptionDirIsPublic = true;
-      database.createLocally = true;
 
       settings = {
         PAPERLESS_ADMIN_USER = "defaultmodel";
