@@ -4,8 +4,6 @@
 
   imports = [ ../default.nix ];
 
-  networking.networkmanager.insertNameservers = [ "1.1.1.1" "8.8.8.8" ];
-
   def.boot = {
     enable = true;
     latestGenerationMax = 20;
