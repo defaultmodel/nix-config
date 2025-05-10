@@ -30,6 +30,13 @@ in {
       '';
     };
 
+    services.adguardhome.settings.filtering.rewrites = [{
+      domain = url;
+      answer =
+        (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+          0).address;
+    }];
+
     ### HOMEPAGE ###
     def.homepage.categories."Arr*"."Prowlarr" = {
       icon = "prowlarr.png";
