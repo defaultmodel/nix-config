@@ -3,9 +3,14 @@
   # For a user called my_user to be authenticated on the samba server, 
   # you must add their password using: `smbpasswd -a my_user`
 
+  systemd.tmpfiles.rules = [
+    "d /data 0755 root root - -"
+    "d /data/public 1777 nobody nogroup - -"
+    "d /data/media 0775 root media - -"
+  ];
+
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
     settings = {
       global = {
@@ -19,8 +24,8 @@
         "guest account" = "nobody";
         "map to guest" = "bad user";
       };
-      "public" = {
-        "path" = "/mnt/shares/public";
+      public = {
+        "path" = "/data/public";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "yes";
@@ -28,40 +33,16 @@
         "directory mask" = "0755";
       };
       ### DATA ###
-      "data" = {
-        "path" = "/mnt/shares/data";
+      data = {
+        "path" = "/data";
         "browseable" = "no";
         "read only" = "no";
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
       };
-      "torrents" = {
-        "path" = "/mnt/shares/data/torrents";
-        "browseable" = "no";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-      };
-      "usenet" = {
-        "path" = "/mnt/shares/data/usenet";
-        "browseable" = "no";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-      };
-      "soulseek" = {
-        "path" = "/mnt/shares/data/soulseek";
-        "browseable" = "no";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-      };
-      "public-media" = {
-        "path" = "/mnt/shares/data/media";
+      public-media = {
+        "path" = "/data/media";
         "browseable" = "yes";
         "read only" = "yes";
         "guest ok" = "yes";

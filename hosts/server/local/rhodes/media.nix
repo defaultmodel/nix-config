@@ -13,6 +13,10 @@ in {
   # Init media group, used by all apps
   users.groups.media = { };
 
+  # Create media folder with appropriates permissions
+  systemd.tmpfiles.rules =
+    [ "d '${mediaDir}/media'        0775 root media - -" ];
+
   ### MEDIA ###
 
   def.jellyfin = {
@@ -101,9 +105,8 @@ in {
 
   age.secrets.slskd-credentials = {
     file = ../../../../secrets/slskd-credentials.age;
-    mode = "440";
+    mode = "400";
     owner = "slskd";
-    group = "slskd";
   };
 
   def.slskd = {
@@ -115,7 +118,8 @@ in {
   ### OTHERS ###
   def.beets = {
     enable = true;
-    importPaths = [ "/data/soulseek/complete" "/data/torrent/music" ];
+    importPaths =
+      [ "${mediaDir}/soulseek/complete" "${mediaDir}/torrent/music" ];
     mediaDir = "${mediaDir}/media/music";
   };
 }

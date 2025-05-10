@@ -21,7 +21,7 @@ in {
 
   config = mkIf cfg.enable {
     systemd.tmpfiles.rules = [
-      "d '${cfg.mediaDir}/torrent'             0755 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/torrent'             0775 ${srv.user} ${srv.group} - -"
       "d '${cfg.mediaDir}/torrent/.incomplete' 0755 ${srv.user} ${srv.group} - -"
       "d '${cfg.mediaDir}/torrent/.watch'      0755 ${srv.user} ${srv.group} - -"
       "d '${cfg.mediaDir}/torrent/movies'      0775 ${srv.user} ${srv.group} - -"

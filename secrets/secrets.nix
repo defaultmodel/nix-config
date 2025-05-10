@@ -21,4 +21,6 @@ in {
   "prowlarr-api-key.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "vaultwarden-admin-token.age".publicKeys =
     [ defaultmodel-wolfcall root-rhodes ];
+  "hetzner-backup-passphrase.age".publicKeys =
+    [ defaultmodel-wolfcall root-rhodes ];
 }

@@ -18,6 +18,9 @@ in {
   };
 
   config = mkIf cfg.enable {
+    systemd.tmpfiles.rules =
+      [ "d '${cfg.photoFolder}'        0775 ${srv.user} ${srv.group} - -" ];
+
     services.immich = {
       enable = true;
       host = "0.0.0.0";

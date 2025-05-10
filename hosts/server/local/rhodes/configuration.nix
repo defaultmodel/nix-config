@@ -108,22 +108,25 @@ in {
   age.secrets.hetzner-backup-passphrase = {
     file = ../../../../secrets/hetzner-backup-passphrase.age;
   };
-  age.secrets.hetzner-rhodes-ssh-key = {
-    file = ../../../../secrets/hetzner-rhodes-ssh-key.age;
-  };
   def.backup = {
     enable = true;
-    jobs = [
-      {
-        name = "hetzner";
-        settings = {
-          paths = [ "/var/lib" "/etc/ssh" "/data/media/music" "/data/photos" "/data/documents" ];
-          exclude = [ "/var/lib/docker" "/var/lib/systemd" ];
-          repo = "";
-          repoPassphraseFile = config.age.secrets.hetzner-rhodes-ssh-key;
-          repoSSHKeyFile = config.age.secrets.hetzner-backup-passphrase;
-        };
-      }
-    ];
+    pgBackup = true;
+    pgBackupDir = "/data/backups/";
+    jobs = {
+      hetzner = {
+        paths = [
+          "/var/lib"
+          "/etc/ssh"
+          "/data/photos"
+          "/data/documents"
+          "/data/backups"
+          "/data/media/music"
+        ];
+        exclude = [ "/var/lib/docker" "/var/lib/systemd" ];
+        repo = "u414837-sub1@u414837.your-storagebox.de:/home/borg-repo";
+        repoPassphraseFile = config.age.secrets.hetzner-backup-passphrase.path;
+        repoSSHKeyFile = "/etc/ssh/ssh_host_ed25519_key";
+      };
+    };
   };
 }

@@ -25,6 +25,15 @@ in {
   };
 
   config = mkIf cfg.enable {
+    systemd.tmpfiles.rules = [
+      "d '${cfg.documentFolder}'        0775 ${srv.user} config.users.users.${
+        (config.users.users.${srv.user}).group
+      } - -"
+      "d '${cfg.consumeFolder}'        0777 ${srv.user} config.users.users.${
+        (config.users.users.${srv.user}).group
+      } - -"
+    ];
+
     services.paperless = {
       enable = true;
       address = "0.0.0.0";
@@ -33,6 +42,9 @@ in {
       mediaDir = cfg.documentFolder;
       consumptionDir = cfg.consumeFolder;
       passwordFile = cfg.passwordFile;
+
+      consumptionDirIsPublic = true;
+      database.createLocally = true;
 
       settings = {
         PAPERLESS_ADMIN_USER = "defaultmodel";

@@ -17,7 +17,8 @@ in {
 
   config = mkIf cfg.enable {
     systemd.tmpfiles.rules = [
-      "d '${cfg.mediaDir}/soulseek/incomplete'  0755 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/soulseek/'  0775 ${srv.user} ${srv.group} - -"
+      "d '${cfg.mediaDir}/soulseek/incomplete'  0775 ${srv.user} ${srv.group} - -"
       "d '${cfg.mediaDir}/soulseek/complete'    0775 ${srv.user} ${srv.group} - -"
     ];
 
@@ -42,6 +43,7 @@ in {
 
     services.slskd = {
       enable = true;
+      group = "media";
       openFirewall = true;
       domain = null;
       environmentFile = cfg.authFile;
@@ -53,8 +55,8 @@ in {
         };
         web = { port = 5030; };
         directories = {
-          downloads = "/mnt/shares/data/soulseek/complete";
-          incomplete = "/mnt/shares/data/soulseek/incomplete";
+          downloads = "${cfg.mediaDir}/soulseek/complete";
+          incomplete = "${cfg.mediaDir}/soulseek/incomplete";
         };
         shares = {
           directories = [

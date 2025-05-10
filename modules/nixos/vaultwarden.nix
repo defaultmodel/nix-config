@@ -9,16 +9,15 @@ let
   url = "vaultwarden.defaultmodel.eu.org";
 in {
   options.def.vaultwarden = {
-    enable = mkOption {
-      default = false;
-      type = types.bool;
-    };
+    enable = mkEnableOption "Vaultwarden password manager";
+    adminTokenFile = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
     services.vaultwarden = {
       enable = true;
       dbBackend = "sqlite";
+      environmentFile = cfg.adminTokenFile;
       config = {
         SIGNUPS_ALLOWED = false;
         ROCKET_ADDRESS = "0.0.0.0";
