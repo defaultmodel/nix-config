@@ -86,7 +86,7 @@ in {
   ### IMMICH ###
   def.immich = {
     enable = true;
-    photoFolder = "${mediaDir}/media/photos";
+    photoFolder = "${mediaDir}/photos";
   };
 
   ## PAPERLESS ###
@@ -100,7 +100,7 @@ in {
   def.paperless = {
     enable = true;
     passwordFile = config.age.secrets.paperless-admin-password.path;
-    documentFolder = "${mediaDir}/media/documents";
+    documentFolder = "${mediaDir}/documents";
     consumeFolder = "${config.services.paperless.dataDir}/consume";
   };
 
