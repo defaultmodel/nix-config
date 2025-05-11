@@ -14,6 +14,8 @@ in {
     environment.variables.EDITOR = "hx";
 
     environment.systemPackages = with pkgs; [
+      python3
+
       # archives
       zip
       xz
