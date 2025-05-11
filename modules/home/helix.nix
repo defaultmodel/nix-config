@@ -33,6 +33,7 @@ in {
         ruff # Python linter
         rust-analyzer # Rust
         taplo # TOML
+        typescript-language-server # TS
         biome # TS
       ];
 
