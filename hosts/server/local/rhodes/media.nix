@@ -118,6 +118,8 @@ in {
   ### OTHERS ###
   def.beets = {
     enable = true;
+    user = "root";
+    group = "root";
     importPaths =
       [ "${mediaDir}/soulseek/complete" "${mediaDir}/torrent/music" ];
     mediaDir = "${mediaDir}/media/music";

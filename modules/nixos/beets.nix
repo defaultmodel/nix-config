@@ -101,22 +101,23 @@ in {
     # Folder creation
     systemd.tmpfiles.rules = [
       "d '${cfg.configDir}'  0770 ${cfg.user} ${cfg.group} - -"
-      "f '${cfg.configDir}/config.yaml'  0660 ${cfg.user} ${cfg.group} - -"
+      "f '${cfg.configDir}/library.db'  0660 ${cfg.user} ${cfg.group} - -"
     ];
 
     systemd.services = listToAttrs (map (path:
       let
-        configFile = (pkgs.formats.yaml { }).generate "config.yml" beetsConfig;
+        configFile = (pkgs.formats.yaml { }).generate "config.yaml" beetsConfig;
         serviceName = "beets-import-${
             replaceStrings [ "/" ] [ "" ] (builtins.baseNameOf path)
           }";
       in nameValuePair serviceName {
         script = "set -eu && ${
             getExe pkgs.beets
-          } -l ${cfg.configDir}/library.blb import -c ${configFile} ${path} --quiet";
+          } -l ${cfg.configDir}/library.db -c ${configFile} import  ${path} --quiet";
         serviceConfig = {
           Type = "oneshot";
-          User = "root";
+          User = cfg.user;
+          Group = cfg.group;
         };
       }) cfg.importPaths);
 
@@ -125,7 +126,7 @@ in {
         serviceName = "beets-import-${
             replaceChars [ "/" ] [ "" ] (builtins.baseNameOf path)
           }";
-        timerName = "${serviceName}.timer";
+        timerName = "${serviceName}";
       in nameValuePair timerName {
         wantedBy = [ "timers.target" ];
         timerConfig = {
