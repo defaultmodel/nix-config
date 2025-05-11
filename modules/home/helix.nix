@@ -33,6 +33,7 @@ in {
         ruff # Python linter
         rust-analyzer # Rust
         taplo # TOML
+        biome # TS
       ];
 
       languages = {
@@ -47,12 +48,70 @@ in {
             auto-format = true;
             language-servers = [ "pyright" "ruff" ];
           }
+          {
+            name = "javascript";
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+            ];
+            auto-format = true;
+          }
+          {
+            name = "typescript";
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+            ];
+            auto-format = true;
+          }
+          {
+            name = "tsx";
+            auto-format = true;
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+            ];
+          }
+          {
+            name = "jsx";
+            auto-format = true;
+            language-servers = [
+              {
+                name = "typescript-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+            ];
+          }
+          {
+            name = "json";
+            language-servers = [
+              {
+                name = "vscode-json-language-server";
+                except-features = [ "format" ];
+              }
+              "biome"
+            ];
+          }
         ];
         language-server.pyright.config.python.analysis.typeCheckingMode =
           "basic";
         language-server.ruff = {
           command = "ruff";
           args = [ "server" ];
+        };
+        language-server.biome = {
+          command = "biome";
+          args = [ "lsp-proxy" ];
         };
       };
 
