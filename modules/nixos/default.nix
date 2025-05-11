@@ -38,5 +38,6 @@
     ./homepage.nix
     ./bluetooth.nix
     ./beets.nix
+    ./low-power.nix
   ];
 }

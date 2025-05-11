@@ -38,6 +38,9 @@ in {
     allowedTCPPorts = [ 80 443 ];
   };
 
+  # Ouch !! 0.2016€ / kWh 
+  def.low-power.enable = true;
+
   age.secrets.smb-credentials = {
     file = ../../../../secrets/smb-credentials.age;
     mode = "440";
