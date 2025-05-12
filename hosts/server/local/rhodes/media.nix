@@ -117,7 +117,7 @@ in {
 
   ### OTHERS ###
   def.beets = {
-    enable = true;
+    enable = false;
     user = "root";
     group = "root";
     importPaths =
