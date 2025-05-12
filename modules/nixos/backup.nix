@@ -1,49 +1,72 @@
 { config, lib, ... }:
 with lib;
 let
-  # Shorter name to access a final setting
   cfg = config.def.backup;
-  srv = config.services.borgbackup;
-
-  # Function to define a new BorgBackup job
+  # Helper to turn each job into the right shape for services.borgbackup.jobs
   defineBorgJob = name: settings: {
-    paths = settings.paths;
-    exclude = settings.exclude;
-    repo = settings.repo;
+    inherit (settings) paths exclude repo;
     encryption = {
       mode = "repokey-blake2";
       passCommand = "cat ${settings.repoPassphraseFile}";
     };
-    environment.BORG_RSH = "ssh -p 23 -i ${settings.repoSSHKeyFile}";
+    environment = { BORG_RSH = "ssh -p 23 -i ${settings.repoSSHKeyFile}"; };
     compression = "auto,lzma";
     startAt = "daily";
+    extraCreateArgs = "--verbose --stats";
+    prune.keep = {
+      within = "1d"; # Keep all archives from the last day
+      daily = 7;
+      weekly = 4;
+      monthly = 1;
+      yearly = 3;
+    };
   };
 in {
-  options.def.backup = {
-    enable = mkEnableOption "Enable automated backups";
-    pgBackup = mkEnableOption "Enable backup of postgresql instance";
-    pgBackupDir = mkOption { type = types.path; };
-    jobs = mkOption {
-      type = types.attrsOf (types.submodule {
-        options = {
-          paths = mkOption { type = types.listOf types.path; };
-          exclude = mkOption {
-            type = types.listOf types.path;
-            default = [ ];
+  options = {
+    def.backup = {
+      enable = mkEnableOption "Enable automated backups";
+      pgBackup = mkEnableOption "Enable backup of postgresql instance";
+      pgBackupDir = mkOption {
+        type = types.path;
+        default = "/var/lib/backup/pg"; # pick a sane default or omit
+      };
+      jobs = mkOption {
+        type = types.attrsOf (types.submodule {
+          options = {
+            paths = mkOption {
+              type = types.listOf types.path;
+              default = [ ];
+            };
+            exclude = mkOption {
+              type = types.listOf types.path;
+              default = [ ];
+            };
+            repo = mkOption {
+              type = types.str;
+              default = "";
+            };
+            repoPassphraseFile = mkOption {
+              type = types.path;
+              default = "";
+            };
+            repoSSHKeyFile = mkOption {
+              type = types.path;
+              default = "";
+            };
           };
-          repo = mkOption { type = types.str; };
-          repoPassphraseFile = mkOption { type = types.path; };
-          repoSSHKeyFile = mkOption { type = types.path; };
-        };
-      });
-      default = { };
+        });
+        default = { };
+      };
     };
   };
 
   config = mkIf cfg.enable {
-    services.borgbackup.jobs =
-      mapAttrs' (name: value: nameValuePair name (defineBorgJob name value))
-      cfg.jobs;
+    # Enable borgbackup and inject each job
+    services.borgbackup = {
+      jobs =
+        mapAttrs' (name: value: nameValuePair name (defineBorgJob name value))
+        cfg.jobs;
+    };
 
     services.postgresqlBackup = mkIf cfg.pgBackup {
       enable = true;
@@ -54,7 +77,6 @@ in {
       compressionLevel = 3;
     };
 
-    systemd.tmpfiles.rules = [ "d ${cfg.pgBackupDir} 0775 root media" ];
-
   };
 }
+
