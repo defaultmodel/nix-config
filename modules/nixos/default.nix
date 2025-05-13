@@ -39,5 +39,6 @@
     ./bluetooth.nix
     ./beets.nix
     ./low-power.nix
+    ./authelia.nix
   ];
 }

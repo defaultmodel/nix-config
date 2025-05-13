@@ -1,0 +1,52 @@
+{ pkgs, ... }:
+{
+  # fuck nano all my homies use helix
+  environment.variables.EDITOR = "hx";
+
+  environment.systemPackages = with pkgs; [
+    python3
+
+    # archives
+    zip
+    xz
+    unzip
+    p7zip
+
+    # utils
+    bat # better cat
+    ripgrep # better grep
+    jq # JSON handling
+    eza # better ls
+    fzf # fuzzy finder
+    sad # better sed
+
+    # misc
+    file
+    which
+    tree
+    tldr
+    gnupg
+    git
+    git-filter-repo
+    lazygit
+    tcpdump
+
+    # DNS
+    dig
+    drill
+    doggo
+
+    # Monitoring
+    btop # replacement of htop/nmon
+    iotop # io monitoring
+    iftop # network monitoring
+
+    # Editor
+    helix
+
+    # system tools
+    lm_sensors # for `sensors` command
+    pciutils # lspci
+    usbutils # lsusb
+  ];
+}

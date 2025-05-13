@@ -3,7 +3,14 @@
   # This is imported by all hosts
 
   imports = [
-    ../modules/nixos/default.nix # Allow all hosts to import nixos modules
+    ./services/boot.nix
+    ./services/default-packages.nix
+    ./services/fonts.nix
+    ./services/locale.nix
+    ./services/sound.nix
+    ./services/ssh-hardening.nix
+    ./services/storage-optimization.nix
+    ./services/system-hardening.nix
   ];
 
   # give me that negetive karma
@@ -23,14 +30,6 @@
     "192.168.1.20" = [ "nas" ];
     "192.168.1.30" = [ "rhodes" ];
   };
-
-  def.default-packages.enable = true;
-
-  def.ssh-hardening.enable = true;
-
-  def.system-hardening.enable = true;
-
-  def.storage-optimization.enable = true;
 
   system.stateVersion = "24.11";
 }

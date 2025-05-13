@@ -2,16 +2,13 @@
 
   # Common config for all desktops
 
-  imports = [ ../default.nix ];
+  imports = [
+    ../default.nix
 
-  def.boot = {
-    enable = true;
-    latestGenerationMax = 20;
-  };
-
-  def.bluetooth.enable = true;
-
-  def.sound.enable = true;
-
-  def.locale.enable = true;
+    ./services/bluetooth.nix
+    ./services/coolercontrol.nix
+    ./services/nvidia.nix
+    ./services/obs-studio.nix
+    ./services/steam.nix
+  ];
 }

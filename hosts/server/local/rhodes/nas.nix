@@ -3,6 +3,8 @@
   # For a user called my_user to be authenticated on the samba server, 
   # you must add their password using: `smbpasswd -a my_user`
 
+  age.secrets.smb-credentials = { file = ../../../../secrets/smb-credentials.age; };
+
   systemd.tmpfiles.rules = [
     "d /data 0755 root root - -"
     "d /data/public 1777 nobody nogroup - -"

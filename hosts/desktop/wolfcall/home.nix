@@ -1,6 +1,11 @@
 { pkgs, ... }: {
 
-  imports = [ ../../../modules/home/default.nix ];
+  imports = [
+    ../home/alacritty.nix
+    ../home/firefox.nix
+    ../home/helix.nix
+    ../home/starship.nix
+  ];
 
   home.username = "defaultmodel";
   home.homeDirectory = "/home/defaultmodel";

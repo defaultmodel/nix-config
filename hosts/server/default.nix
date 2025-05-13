@@ -6,7 +6,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ../default.nix # Common config for all hosts
-    ../../modules/nixos/default.nix # Allow hosts to import modules
+
+    ./services/watchdog.nix
   ];
 
   # Default user
@@ -22,16 +23,7 @@
   };
 
   services.openssh.enable = true;
-
   services.qemuGuest.enable = true;
-
-  def.boot = {
-    enable = true;
-    # Server shouldn't need many generations
-    latestGenerationMax = 5;
-  };
-
-  def.watchdog.enable = true;
 
   # Given that our systems are headless, emergency mode is useless.
   # We prefer the system to attempt to continue booting so
