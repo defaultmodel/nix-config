@@ -1,6 +1,15 @@
 { pkgs, ... }: {
 
-  imports = [ ../default.nix ./disk-config.nix ];
+  imports = [
+    ../default.nix
+    ./disk-config.nix
+
+    ./services/bluetooth.nix
+    ./services/coolercontrol.nix
+    ./services/nvidia.nix
+    ./services/obs-studio.nix
+    ./services/steam.nix
+  ];
 
   networking = {
     hostName = "wolfcall";
@@ -37,12 +46,6 @@
     '';
   };
 
-  fileSystems."/home/defaultmodel/Music" = {
-    device = "//nas/music";
-    fsType = "cifs";
-    options = [ "x-systemd.automount" "noauto" ];
-  };
-
   # Plasma 6
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
@@ -57,21 +60,6 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
-
-  def.nvidia.enable = true;
-
-  def.steam.enable = true;
-
-  def.obs-studio = {
-    enable = true;
-    enableNVENC = true;
-  };
-
-  def.fonts.enable = true;
-
-  def.coolercontrol.enable = true;
-
-  def.music-player.enable = true;
 
   services.tailscale.enable = true;
 }

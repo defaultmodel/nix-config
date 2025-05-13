@@ -1,10 +1,10 @@
 { pkgs, ... }: {
 
   imports = [
-    ../home/alacritty.nix
-    ../home/firefox.nix
-    ../home/helix.nix
-    ../home/starship.nix
+    ./home/alacritty.nix
+    ./home/firefox.nix
+    ./home/helix.nix
+    ./home/starship.nix
   ];
 
   home.username = "defaultmodel";
@@ -21,20 +21,6 @@
     userName = "Hilan Meyran";
     userEmail = "hilanmeyran@protonmail.com";
   };
-
-  def.helix = {
-    enable = true;
-    defaultEditor = true;
-  };
-  def.firefox = {
-    enable = true;
-    verticalTabs = true;
-  };
-  def.starship = {
-    enable = true;
-    fishIntegration = true;
-  };
-  def.alacritty.enable = true;
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
