@@ -3,11 +3,12 @@ let
   srv = config.services.radarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "radarr.defaultmodel.eu.org";
-in
-{
+in {
   age.secrets.radarr-api-key = {
     file = ../../../../../secrets/radarr-api-key.age;
+    mode = "440";
     owner = srv.user;
+    group = srv.group;
   };
 
   services.radarr = {

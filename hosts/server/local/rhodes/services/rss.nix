@@ -3,12 +3,10 @@ let
   srv = config.services.miniflux;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "rss.defaultmodel.eu.org";
-in
-{
+in {
   age.secrets.rss-credentials = {
-    file = ../../../../secrets/rss-credentials.age;
-    mode = "400";
-    owner = srv.user;
+    file = ../../../../../secrets/rss-credentials.age;
+    owner = "miniflux";
   };
 
   services.miniflux = {

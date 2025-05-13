@@ -20,7 +20,7 @@ in {
   imports = [
     ### MEDIA ###
     ./services/jellyfin.nix
-    ./services/jellyseer.nix
+    ./services/jellyseerr.nix
     ./services/navidrome.nix
     ### ARR ###
     ./services/radarr.nix

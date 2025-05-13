@@ -1,5 +1,4 @@
-{ ... }:
-{
+{ ... }: {
 
   imports = [
     ../default.nix # Common config for all local servers
@@ -8,9 +7,7 @@
 
     ./nas.nix
     ./media.nix
-    ./baclup.nix
-
-    ./services/low-power.nix
+    ./backup.nix
 
     ./services/adguardhome.nix
     ./services/homepage.nix

@@ -1,14 +1,14 @@
-{ config, lib, ... }:
-with lib;
+{ config, ... }:
 let
   srv = config.services.sonarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "sonarr.defaultmodel.eu.org";
-in
-{
+in {
   age.secrets.sonarr-api-key = {
     file = ../../../../../secrets/sonarr-api-key.age;
+    mode = "440";
     owner = srv.user;
+    group = srv.group;
   };
 
   services.sonarr = {
@@ -16,15 +16,6 @@ in
     group = "media";
     openFirewall = true;
     environmentFiles = [ config.age.secrets.sonarr-api-key.path ];
-  };
-
-  # The same could be done via services.radarr.environmentFiles
-  # But this solution for every service rather than just the *arrs
-  systemd.services.sonarr = {
-    serviceConfig = {
-      LoadCredential = [ "key:${cfg.apiKeyFile}" ];
-      Environment = [ "SONARR__AUTH__APIKEY=%d/key" ];
-    };
   };
 
   ### REVERSE PROXY ###

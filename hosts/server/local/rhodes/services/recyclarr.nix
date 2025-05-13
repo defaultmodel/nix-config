@@ -1,20 +1,22 @@
 { config, ... }:
-let
-  srv = config.services.recyclarr;
-in
-{
+let srv = config.services.recyclarr;
+in {
   age.secrets.radarr-api-key = {
     file = ../../../../../secrets/radarr-api-key.age;
-    owner = srv.user;
+    mode = "440";
+    group = srv.group;
   };
 
   age.secrets.sonarr-api-key = {
     file = ../../../../../secrets/sonarr-api-key.age;
-    owner = srv.user;
+    mode = "440";
+    group = srv.group;
   };
 
   services.recyclarr = {
     enable = true;
+    user = "recyclarr";
+    group = "media";
     configuration = {
       radarr = [{
         api_key = {

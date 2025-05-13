@@ -3,10 +3,9 @@ let
   srv = config.services.bazarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "bazarr.defaultmodel.eu.org";
-in
-{
+in {
   age.secrets.bazarr-api-key = {
-    file = ../../../../secrets/bazarr-api-key.age;
+    file = ../../../../../secrets/bazarr-api-key.age;
     owner = srv.user;
   };
 
@@ -16,7 +15,8 @@ in
     openFirewall = true;
   };
 
-  systemd.services.bazarr.serviceConfig.EnvironmentFile = config.age.secrets.bazarr-api-key.path;
+  systemd.services.bazarr.serviceConfig.EnvironmentFile =
+    config.age.secrets.bazarr-api-key.path;
 
   ### REVERSE PROXY ###
   services.caddy = {

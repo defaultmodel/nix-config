@@ -6,17 +6,16 @@ let
 
   documentDir = "/data/documents";
   consumeDir = "${config.services.paperless.dataDir}/consume";
-in
-{
+in {
   age.secrets.paperless-admin-password = {
-    file = ../../../../secrets/paperless-admin-password.age;
+    file = ../../../../../secrets/paperless-admin-password.age;
     owner = srv.user;
   };
 
   systemd.tmpfiles.rules = [
     "d '${documentDir}'   0775 ${srv.user} config.users.users.${
-        (config.users.users.${srv.user}).group
-      } - -"
+      (config.users.users.${srv.user}).group
+    } - -"
     "d '${consumeDir}'    1777 nobody nogroup - -"
   ];
 

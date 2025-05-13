@@ -3,17 +3,10 @@ let
   srv = config.services.prowlarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "prowlarr.defaultmodel.eu.org";
-in
-{
-  age.secrets.prowlarr-api-key = {
-    file = ../../../../../secrets/prowlarr-api-key.age;
-    owner = srv.user;
-  };
-
+in {
   services.prowlarr = {
     enable = true;
     openFirewall = true;
-    environmentFiles = [ config.age.secrets.prowlarr-api-key.path ];
   };
 
   ### REVERSE PROXY ###

@@ -3,10 +3,9 @@ let
   srv = config.services.lidarr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "lidarr.defaultmodel.eu.org";
-in
-{
+in {
   age.secrets.lidarr-api-key = {
-    file = ../../../../secrets/lidarr-api-key.age;
+    file = ../../../../../secrets/lidarr-api-key.age;
     owner = srv.user;
   };
 
