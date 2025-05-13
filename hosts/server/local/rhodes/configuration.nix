@@ -19,6 +19,7 @@
     ./services/vaultwarden.nix
     ./services/immich.nix
     ./services/paperless.nix
+    ./services/fancontrol.nix
   ];
 
   networking = {
