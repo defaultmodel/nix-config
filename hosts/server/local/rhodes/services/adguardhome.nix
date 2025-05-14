@@ -1,11 +1,9 @@
-{ config, lib, ... }:
-with lib;
+{ config, ... }:
 let
   srv = config.services.adguardhome;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "adguardhome.defaultmodel.eu.org";
-in
-{
+in {
   services.adguardhome = {
     enable = true;
     host = "0.0.0.0";
@@ -21,7 +19,8 @@ in
       };
       users = [{
         name = "defaultmodel";
-        password = "$2a$15$0kVcvZCskZQvHt.qfi.K/O2d1Iah/8V8S7gGaYXaKZxsQAHdU5nI.";
+        password =
+          "$2a$15$0kVcvZCskZQvHt.qfi.K/O2d1Iah/8V8S7gGaYXaKZxsQAHdU5nI.";
       }];
       auth_attempts = 5;
       block_auth_min = 15;
@@ -92,8 +91,9 @@ in
         parental_cache_size = 1048576;
         rewrites = [{
           domain = url;
-          answer = (builtins.elemAt
-            (config.networking.interfaces.bond0.ipv4.addresses) 0).address;
+          answer =
+            (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+              0).address;
         }];
         cache_time = 30;
         filters_update_interval = 24;
