@@ -9,8 +9,7 @@ let
   downloadDir = "/data/torrent";
   incompleteDir = "/data/torrent/.incomplete";
   watchDir = "/data/torrent/.watch";
-in
-{
+in {
   systemd.tmpfiles.rules = [
     "d '${downloadDir}'             0775 ${srv.user} ${srv.group} - -"
     "d '${incompleteDir}' 0755 ${srv.user} ${srv.group} - -"
@@ -62,18 +61,23 @@ in
     openPeerPorts = true;
 
     settings = {
-      download-dir = "/data/torrent";
+      download-dir = downloadDir;
       incomplete-dir-enabled = true;
-      incomplete-dir = "/data/torrent/.incomplete";
+      incomplete-dir = incompleteDir;
       watch-dir-enabled = true;
-      watch-dir = "/data/torrent/.watch";
+      watch-dir = watchDir;
 
-      rpc-bind-address = "0.0.0.0";
-      rpc-port = 57182;
+      rpc-bind-address =
+        "0.0.0.0"; # Bind RPC/WebUI to VPN network namespace address
+      rpc-port = 9091;
       rpc-whitelist-enabled = true;
-      rpc-whitelist = strings.concatStringsSep "," ([
-        "127.0.0.1,192.168.1.*" # Defaults
-      ]);
+      # "192.168.15.5"; Access from default network namespace
+      # "192.168.1.*";  Access from other machines on specific subnet
+      # "127.0.0.1";    Access through loopback within VPN network namespace
+      rpc-whitelist =
+        strings.concatStringsSep "," ([ "127.0.0.1,192.168.1.*,192.168.15.5" ]);
+      rpc-host-whitelist-enabled = true;
+      rpc-host-whitelist = url;
       rpc-authentication-required = false;
 
       blocklist-enabled = true;
@@ -95,7 +99,7 @@ in
   ### REVERSE PROXY ###
   services.caddy = {
     virtualHosts.${url}.extraConfig = ''
-      reverse_proxy http://localhost:${toString srv.settings.rpc-port}
+      reverse_proxy http://192.168.15.1:${toString srv.settings.rpc-port}
       tls ${certloc}/cert.pem ${certloc}/key.pem {
         protocols tls1.3
       }
