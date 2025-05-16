@@ -3,8 +3,7 @@ let
   srv = config.services.uptime-kuma;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "uptime.defaultmodel.eu.org";
-in
-{
+in {
   services.uptime-kuma = {
     enable = true;
     settings = {
@@ -31,7 +30,7 @@ in
   }];
 
   ### HOMEPAGE ###
-  def.homepage.categories."Monitor"."Uptime-Kuma" = {
+  def.homepage.categories."Monitoring"."Uptime-Kuma" = {
     icon = "uptime-kuma.png";
     description = "Uptime monitor";
     href = "https://${url}";
