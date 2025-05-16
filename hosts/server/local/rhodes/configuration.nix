@@ -18,6 +18,7 @@
     ./services/paperless.nix
     ./services/fancontrol.nix
     ./services/hedgedoc.nix
+    ./services/monitoring/default.nix
   ];
 
   networking = {
