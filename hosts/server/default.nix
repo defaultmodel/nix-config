@@ -8,6 +8,7 @@
     ../default.nix # Common config for all hosts
 
     ./services/watchdog.nix
+    ./services/monitoring-exporter.nix
   ];
 
   # Default user
