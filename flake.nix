@@ -1,10 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Latest stable branch of nixpkgs, used for version rollback
-    # The current latest version is 24.11
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,8 +12,8 @@
     agenix.url = "github:ryantm/agenix";
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
   };
-  outputs = { nixpkgs, nixpkgs-stable, home-manager, disko, agenix
-    , vpn-confinement, ... }@inputs: {
+  outputs =
+    { nixpkgs, home-manager, disko, agenix, vpn-confinement, ... }@inputs: {
       colmena = {
         meta = {
           # It helps prevent accidental deployments to the entire cluster when tags are used (e.g., @production and @staging).
