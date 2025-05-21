@@ -31,6 +31,8 @@ in {
       enable = true;
       openFirewall = true;
 
+      allowedHosts = "*";
+
       settings = {
         title = "Rhodes";
         favicon = "https://huggingface.co/favicon.ico";
@@ -105,11 +107,6 @@ in {
           };
         }
       ];
-    };
-
-    systemd.services.homepage-dashboard.environment = {
-      # We can afford this because only our local network will have access
-      HOMEPAGE_ALLOWED_HOSTS = "*";
     };
 
     ### REVERSE PROXY ###
