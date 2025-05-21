@@ -11,7 +11,7 @@
 
     ./services/adguardhome.nix
     ./services/homepage.nix
-    ./services/reverse-proxy.nix
+    ./services/caddy.nix
     ./services/rss.nix
     ./services/vaultwarden.nix
     ./services/immich.nix
