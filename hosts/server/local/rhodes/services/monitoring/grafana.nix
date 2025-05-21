@@ -4,8 +4,7 @@ let
   srv = config.services.grafana;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "grafana.defaultmodel.eu.org";
-in
-{
+in {
   services.grafana = {
     enable = true;
 
@@ -22,23 +21,25 @@ in
           name = "Prometheus";
           type = "prometheus";
           uid = "prom1";
-          url = ("http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}");
+          url =
+            ("http://localhost:${toString config.services.prometheus.port}");
           isDefault = true;
         }
         {
           name = "Loki";
           type = "loki";
-          url = ("http://${config.services.loki.configuration.server.http_listen_address}:${toString config.services.loki.configuration.server.http_listen_port}");
+          url = ("http://localhost:${
+              toString
+              config.services.loki.configuration.server.http_listen_port
+            }");
         }
       ];
-      dashboards.settings.providers = [
-        {
-          name = "Node Exporter Full";
-          type = "file";
-          url = "https://grafana.com/api/dashboards/1860/revisions/29/download";
-          options.path = dashboards/node-exporter-full.json;
-        }
-      ];
+      dashboards.settings.providers = [{
+        name = "Node Exporter Full";
+        type = "file";
+        url = "https://grafana.com/api/dashboards/1860/revisions/29/download";
+        options.path = dashboards/node-exporter-full.json;
+      }];
     };
   };
 

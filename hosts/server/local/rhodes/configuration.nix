@@ -19,6 +19,7 @@
     ./services/fancontrol.nix
     ./services/hedgedoc.nix
     ./services/monitoring/default.nix
+    ./services/protonmail-bridge.nix
   ];
 
   networking = {
