@@ -1,14 +1,14 @@
 { config, ... }:
 let srv = config.services.recyclarr;
 in {
-  age.secrets.radarr-api-key = {
-    file = ../../../../../secrets/radarr-api-key.age;
+  age.secrets.radarr-api-key-plain = {
+    file = ../../../../../secrets/radarr-api-key-plain.age;
     mode = "440";
     group = srv.group;
   };
 
-  age.secrets.sonarr-api-key = {
-    file = ../../../../../secrets/sonarr-api-key.age;
+  age.secrets.sonarr-api-key-plain = {
+    file = ../../../../../secrets/sonarr-api-key-plain.age;
     mode = "440";
     group = srv.group;
   };
@@ -21,24 +21,26 @@ in {
 
     configuration = {
       radarr = {
-        main = {
+        main-radarr = {
           api_key = {
             _secret = "/run/credentials/recyclarr.service/radarr-api_key";
           };
           base_url = "http://localhost:7878";
           quality_definition = { type = "movie"; };
-          include = {
-            template = [
-              # Shows
-              "radarr-quality-definition-movie"
-              "radarr-quality-profile-hd-remux-web-french-multi-vf"
-              "radarr-custom-formats-hd-remux-web-french-multi-vf"
-              # Anime
-              # "radarr-quality-definition-movie" # Shows take priority
-              "radarr-quality-profile-anime"
-              "radarr-custom-formats-anime"
-            ];
-          };
+          include = [
+            # Shows
+            { template = "radarr-quality-definition-movie"; }
+            {
+              template = "radarr-quality-profile-hd-remux-web-french-multi-vf";
+            }
+            {
+              template = "radarr-custom-formats-hd-remux-web-french-multi-vf";
+            }
+            # Anime
+            # {template = "radarr-quality-definition-movie" ;} # Shows take priority
+            { template = "radarr-quality-profile-anime"; }
+            { template = "radarr-custom-formats-anime"; }
+          ];
           custom_formats = [
             {
               trash_ids = [
@@ -74,24 +76,28 @@ in {
         };
       };
       sonarr = {
-        main = {
+        main-sonarr = {
           api_key = {
             _secret = "/run/credentials/recyclarr.service/sonarr-api_key";
           };
           base_url = "http://localhost:8989";
           quality_definition = { type = "series"; };
-          include = {
-            template = [
-              # Shows
-              "sonarr-quality-definition-series"
-              "sonarr-v4-quality-profile-bluray-web-1080p-french-multi-vf"
-              "sonarr-v4-custom-formats-bluray-web-1080p-french-multi-vf"
-              # Anime
-              # "sonarr-quality-definition-anime" # Shows take priority
-              "sonarr-v4-quality-profile-1080p-french-anime-multi"
-              "sonarr-v4-custom-formats-1080p-french-anime-multi"
-            ];
-          };
+          include = [
+            # Shows
+            { template = "sonarr-quality-definition-series"; }
+            {
+              template =
+                "sonarr-v4-quality-profile-bluray-web-1080p-french-multi-vf";
+            }
+            {
+              template =
+                "sonarr-v4-custom-formats-bluray-web-1080p-french-multi-vf";
+            }
+            # Anime
+            # {template = "sonarr-quality-definition-anime" ;} # Shows take priority
+            { template = "sonarr-v4-quality-profile-1080p-french-anime-multi"; }
+            { template = "sonarr-v4-custom-formats-1080p-french-anime-multi"; }
+          ];
           custom_formats = [
             {
               trash_ids = [
@@ -122,8 +128,8 @@ in {
   };
 
   systemd.services.recyclarr.serviceConfig.LoadCredential = [
-    "radarr-api_key:${config.age.secrets.radarr-api-key.path}"
-    "sonarr-api_key:${config.age.secrets.sonarr-api-key.path}"
+    "radarr-api_key:${config.age.secrets.radarr-api-key-plain.path}"
+    "sonarr-api_key:${config.age.secrets.sonarr-api-key-plain.path}"
   ];
 }
 

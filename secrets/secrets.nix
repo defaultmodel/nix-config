@@ -22,4 +22,7 @@ in {
     [ defaultmodel-wolfcall root-rhodes ];
   "hetzner-backup-passphrase.age".publicKeys =
     [ defaultmodel-wolfcall root-rhodes ];
+  "radicale-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
+  "radarr-api-key-plain.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
+  "sonarr-api-key-plain.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
 }
