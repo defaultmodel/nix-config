@@ -41,9 +41,9 @@ in {
       };
 
       storage_config = {
-        boltdb_shipper = {
-          active_index_directory = "${srv.dataDir}/boltdb-shipper-index";
-          cache_location = "${srv.dataDir}/boltdb-shipper-cache";
+        tsdb_shipper = {
+          active_index_directory = "${srv.dataDir}/tsdb-index";
+          cache_location = "${srv.dataDir}/tsdb-cache";
           cache_ttl = "24h";
         };
         filesystem = { directory = "${srv.dataDir}/chunks"; };
