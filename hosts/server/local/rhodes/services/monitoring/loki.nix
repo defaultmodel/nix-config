@@ -1,8 +1,6 @@
 { config, ... }:
-let
-  srv = config.services.loki;
-in
-{
+let srv = config.services.loki;
+in {
   services.loki = {
     enable = true;
     configuration = {
@@ -21,9 +19,7 @@ in
         lifecycler = {
           address = "127.0.0.1";
           ring = {
-            kvstore = {
-              store = "inmemory";
-            };
+            kvstore = { store = "inmemory"; };
             replication_factor = 1;
           };
           final_sleep = "0s";
@@ -32,18 +28,16 @@ in
       };
 
       schema_config = {
-        configs = [
-          {
-            from = "2022-12-01";
-            store = "boltdb-shipper";
-            object_store = "filesystem";
-            schema = "v11";
-            index = {
-              prefix = "index_";
-              period = "24h";
-            };
-          }
-        ];
+        configs = [{
+          from = "2022-12-01";
+          store = "tsdb";
+          object_store = "filesystem";
+          schema = "v13";
+          index = {
+            prefix = "index_";
+            period = "24h";
+          };
+        }];
       };
 
       storage_config = {
@@ -52,9 +46,7 @@ in
           cache_location = "${srv.dataDir}/boltdb-shipper-cache";
           cache_ttl = "24h";
         };
-        filesystem = {
-          directory = "${srv.dataDir}/chunks";
-        };
+        filesystem = { directory = "${srv.dataDir}/chunks"; };
       };
 
       limits_config = {
@@ -63,14 +55,11 @@ in
         reject_old_samples_max_age = "72h";
       };
 
-      compactor = {
-        working_directory = "${srv.dataDir}/compactor";
-      };
+      compactor = { working_directory = "${srv.dataDir}/compactor"; };
     };
   };
 
-  networking.firewall.allowedTCPPorts = [
-    srv.configuration.server.http_listen_port
-  ];
+  networking.firewall.allowedTCPPorts =
+    [ srv.configuration.server.http_listen_port ];
 }
 
