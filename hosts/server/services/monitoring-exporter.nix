@@ -26,6 +26,50 @@ in {
             host = config.networking.hostName;
           };
         };
+        pipeline_stages = [
+          {
+            json.expressions = {
+              transport = "_TRANSPORT";
+              unit = "_SYSTEMD_UNIT";
+              msg = "MESSAGE";
+              coredump_cgroup = "COREDUMP_CGROUP";
+              coredump_exe = "COREDUMP_EXE";
+              coredump_cmdline = "COREDUMP_CMDLINE";
+              coredump_uid = "COREDUMP_UID";
+              coredump_gid = "COREDUMP_GID";
+            };
+          }
+          {
+            # Set the unit (defaulting to the transport like audit and kernel)
+            template = {
+              source = "unit";
+              template = "{{if .unit}}{{.unit}}{{else}}{{.transport}}{{end}}";
+            };
+          }
+          {
+            regex = {
+              expression = "(?P<coredump_unit>[^/]+)$";
+              source = "coredump_cgroup";
+            };
+          }
+          { labels.coredump_unit = "coredump_unit"; }
+          {
+            # Normalize session IDs (session-1234.scope -> session.scope) to limit number of label values
+            replace = {
+              source = "unit";
+              expression = "^(session-\\d+.scope)$";
+              replace = "session.scope";
+            };
+          }
+          { labels.unit = "unit"; }
+          {
+            # Write the proper message instead of JSON
+            output.source = "msg";
+          }
+          # Silence
+          # ignore random portscans on the internet
+          { drop.expression = "refused connection: IN="; }
+        ];
         relabel_configs = [
           {
             source_labels = [ "__journal__systemd_unit" ];
