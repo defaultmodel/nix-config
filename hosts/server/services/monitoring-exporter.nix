@@ -1,11 +1,10 @@
 { config, ... }:
-let metricsHost = "192.168.1.30"; # Rhodes
+let metricsHost = "192.168.1.30"; # rhodes
 in {
   services.prometheus.exporters.node = {
     enable = true;
     port = 9100;
     openFirewall = true;
-
     enabledCollectors = [ "systemd" ];
   };
 
@@ -54,4 +53,3 @@ in {
   };
 
 }
-
