@@ -1,19 +1,20 @@
-{ config, ... }:
+{ config, lib, ... }:
+with lib;
 let
   mediaDir = "/data";
   srv = config.services.jellyfin;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "jellyfin.defaultmodel.eu.org";
-in
-{
+in {
   # Always prioritise Jellyfin IO
   systemd.services.jellyfin.serviceConfig.IOSchedulingPriority = 0;
 
   # Give access to GPU for transcoding
-  users.users.${config.services.jellyfin.user}.extraGroups = [ "video" "render" ];
-  # systemd.services.jellyfin.serviceConfig = {
-  #   DeviceAllow = lib.mkForce [ "/dev/dri/card0" "/dev/dri/card1" ];
-  # };
+  users.users.${config.services.jellyfin.user}.extraGroups =
+    [ "video" "render" ];
+  systemd.services.jellyfin.serviceConfig = {
+    DeviceAllow = mkForce [ "/dev/dri/card0" ];
+  };
 
   # The files he needs to function
   systemd.tmpfiles.rules = [
