@@ -33,6 +33,7 @@ in {
     ./services/torrent.nix
     ./services/slskd.nix
 
+    ./services/flaresolverr.nix
     ./services/beets.nix
   ];
 }
