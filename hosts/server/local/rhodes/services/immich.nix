@@ -1,4 +1,5 @@
-{ config, ... }:
+{ config, lib, ... }:
+with lib;
 let
   srv = config.services.immich;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
@@ -6,8 +7,13 @@ let
 
   mediaDir = "/data";
   photosDir = "${mediaDir}/photos";
-in
-{
+in {
+  # Give access to GPU for accelerated AI
+  users.users.${srv.user}.extraGroups = [ "video" "render" ];
+  systemd.services.immich.serviceConfig = {
+    DeviceAllow = mkForce [ "/dev/dri/card0" ];
+  };
+
   systemd.tmpfiles.rules =
     [ "d '${photosDir}'        0775 ${srv.user} ${srv.group} - -" ];
 
