@@ -33,8 +33,6 @@
     borgbackup
     vlc
     pnpm
-    rustc
-    cargo
   ];
 
   programs.fish = {
