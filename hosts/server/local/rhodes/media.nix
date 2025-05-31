@@ -32,6 +32,8 @@ in {
     ### DOWNLOADERS ###
     ./services/torrent.nix
     ./services/slskd.nix
+
+    ./services/beets.nix
   ];
 }
 
