@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   programs.helix = {
     enable = true;
     defaultEditor = true;
@@ -91,9 +90,12 @@
             "biome"
           ];
         }
+        {
+          name = "rust";
+          auto-format = true;
+        }
       ];
-      language-server.pyright.config.python.analysis.typeCheckingMode =
-        "basic";
+      language-server.pyright.config.python.analysis.typeCheckingMode = "basic";
       language-server.ruff = {
         command = "ruff";
         args = [ "server" ];
@@ -102,6 +104,7 @@
         command = "biome";
         args = [ "lsp-proxy" ];
       };
+      language-server.rust-analyzer.config.check = { command = "clippy"; };
     };
 
     settings = {
