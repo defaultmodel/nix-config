@@ -104,7 +104,10 @@
         command = "biome";
         args = [ "lsp-proxy" ];
       };
-      language-server.rust-analyzer.config.check = { command = "clippy"; };
+      language-server.rust-analyzer.config = {
+        check = { command = "clippy"; };
+        procMacro.ignored.leptos_macro = [ "component" "server" ];
+      };
     };
 
     settings = {
