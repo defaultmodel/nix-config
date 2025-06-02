@@ -32,6 +32,7 @@
     ragenix
     borgbackup
     vlc
+    obsidian # Note taking
     pnpm
     ### GAMING
     lutris
