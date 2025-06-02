@@ -41,8 +41,15 @@ in {
     config = {
       download_location = downloadDir;
       enabled_plugins = [ "Label" "WebUi" ];
-      # max_download_speed = 20000;
-      # max_upload_speed = 10000;
+
+      max_connections_global = -1;
+      max_upload_speed = -1;
+      max_download_speed = -1;
+      max_upload_slots_global = -1;
+      max_active_seeding = -1;
+      max_active_downloading = -1;
+      max_active_limit = -1;
+      super_seeding = true;
 
       random_outgoing_ports = false;
       pre_allocate_storage = true;
