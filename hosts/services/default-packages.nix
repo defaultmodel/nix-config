@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   # fuck nano all my homies use helix
   environment.variables.EDITOR = "hx";
 
@@ -45,7 +44,8 @@
     helix
 
     # system tools
-    lm_sensors # for `sensors` command
+    lm_sensors # for `sensors` and `sensors-detect` command
+    dmidecode # for `sensors-detect` to detect IPMI
     pciutils # lspci
     usbutils # lsusb
   ];
