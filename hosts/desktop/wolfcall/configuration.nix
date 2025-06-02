@@ -9,6 +9,7 @@
     ./services/nvidia.nix
     ./services/obs-studio.nix
     ./services/steam.nix
+    ./services/virtualisation.nix
   ];
 
   networking = {
