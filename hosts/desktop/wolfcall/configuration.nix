@@ -33,6 +33,9 @@
     borgbackup
     vlc
     pnpm
+    ### GAMING
+    lutris
+    wineWowPackages.waylandFull
   ];
 
   programs.fish = {
