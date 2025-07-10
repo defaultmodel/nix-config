@@ -13,6 +13,7 @@
     win-virtio
     win-spice
     adwaita-icon-theme
+    quickemu # some nice shit right there
   ];
 
   virtualisation = {
