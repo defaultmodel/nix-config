@@ -22,6 +22,7 @@
       taplo # TOML
       typescript-language-server # TS
       biome # TS
+      astro-language-server # TS/Astro
     ];
 
     languages = {
@@ -94,6 +95,11 @@
           name = "rust";
           auto-format = true;
         }
+        {
+          name = "astro";
+          auto-format = true;
+          language-servers = [ "astro-ls" ];
+        }
       ];
       language-server.pyright.config.python.analysis.typeCheckingMode = "basic";
       language-server.ruff = {
@@ -107,6 +113,15 @@
       language-server.rust-analyzer.config = {
         check = { command = "clippy"; };
         procMacro.ignored.leptos_macro = [ "component" "server" ];
+      };
+      language-server.astro-ls = {
+        command = "astro-ls";
+        args = [ "--stdio" ];
+        config.typescript = {
+          # How do I get this programaticaly ?
+          # tsdk = ".bun/install/global/node_modules/typescript/lib";
+          environment = "node";
+        };
       };
     };
 
