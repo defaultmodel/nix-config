@@ -23,6 +23,8 @@
       typescript-language-server # TS
       biome # TS
       astro-language-server # TS/Astro
+      gopls # go
+      golangci-lint-langserver # go
     ];
 
     languages = {
