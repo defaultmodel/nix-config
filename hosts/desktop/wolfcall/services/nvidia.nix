@@ -1,11 +1,13 @@
-{ pkgs, config, ... }:
-{
+{ pkgs, config, ... }: {
   # Disables GSP which is a RISC-V processor included with recent (Turing and newer) NVIDIA cards.
   # It is responsible for doing things that were previously handled by driver itself (for example power management).
   # In theory it should improve performance but due to some bugs it is currently slower for some people.
   # When you disable it driver doesn’t use it and handles things by itself like before
   # Forcefully enabled in the open-source drivers
   # boot.kernelParams = [ "nvidia.NVreg_EnableGpuFirmware=0" ];
+
+  # CUDA support
+  environment.systemPackages = with pkgs; [ cudatoolkit ];
 
   hardware = {
     # Enable OpenGL
