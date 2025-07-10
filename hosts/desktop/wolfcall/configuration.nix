@@ -63,6 +63,4 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
-
-  services.tailscale.enable = true;
 }

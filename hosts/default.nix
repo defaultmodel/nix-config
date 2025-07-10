@@ -16,6 +16,8 @@
   # give me that negetive karma
   nixpkgs.config.allowUnfree = true;
 
+  services.tailscale.enable = true;
+
   # Eiffel Tower FTW !!
   time.timeZone = lib.mkDefault "Europe/Paris";
 
