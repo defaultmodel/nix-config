@@ -18,6 +18,7 @@
     eza # better ls
     fzf # fuzzy finder
     sad # better sed
+    zellij # Terminal multiplexer
 
     # misc
     file
