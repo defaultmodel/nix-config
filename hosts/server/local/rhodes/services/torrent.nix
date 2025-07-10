@@ -42,6 +42,7 @@ in {
       download_location = downloadDir;
       enabled_plugins = [ "Label" "WebUi" ];
 
+      auto_managed = false;
       max_connections_global = -1;
       max_upload_speed = -1;
       max_download_speed = -1;
