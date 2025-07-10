@@ -5,6 +5,7 @@
     ./home/firefox.nix
     ./home/helix.nix
     ./home/starship.nix
+    ./home/git.nix
   ];
 
   home.username = "defaultmodel";
@@ -15,12 +16,6 @@
     heroic # Game launcher
     moonlight-qt # Game Streaming
   ];
-
-  programs.git = {
-    enable = true;
-    userName = "Hilan Meyran";
-    userEmail = "hilanmeyran@protonmail.com";
-  };
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
