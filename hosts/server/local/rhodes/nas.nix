@@ -59,4 +59,11 @@
     enable = true;
     openFirewall = true;
   };
+  # More auto discovery
+  services.avahi = {
+    enable = true;
+    openFirewall = true;
+    publish.enable = true;
+    publish.userServices = true;
+  };
 }
