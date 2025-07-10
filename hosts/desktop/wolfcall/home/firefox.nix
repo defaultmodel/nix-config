@@ -8,8 +8,7 @@ let
     Value = true;
     Status = "locked";
   };
-in
-{
+in {
   programs = {
     firefox = {
       enable = true;
@@ -33,8 +32,7 @@ in
         OverrideFirstRunPage = "";
         OverridePostUpdatePage = "";
         DontCheckDefaultBrowser = true;
-        DisplayBookmarksToolbar =
-          "never"; # alternatives: "always" or "newtab"
+        DisplayBookmarksToolbar = "never"; # alternatives: "always" or "newtab"
         DisplayMenuBar =
           "default-off"; # alternatives: "always", "never" or "default-on"
         SearchBar = "unified"; # alternative: "separate"
@@ -44,8 +42,7 @@ in
         # Valid strings for installation_mode are "allowed", "blocked",
         # "force_installed" and "normal_installed".
         ExtensionSettings = {
-          "*".installation_mode =
-            "blocked"; # blocks all addons except the ones specified below
+          # "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
           # uBlock Origin:
           "uBlock0@raymondhill.net" = {
             install_url =
