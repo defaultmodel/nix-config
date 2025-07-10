@@ -10,6 +10,7 @@
     ./services/obs-studio.nix
     ./services/steam.nix
     ./services/virtualisation.nix
+    ./services/audit.nix
   ];
 
   networking = {
