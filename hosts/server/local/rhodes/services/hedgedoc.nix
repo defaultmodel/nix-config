@@ -15,7 +15,11 @@ in {
 
       allowFreeURL = true;
       allowAnonymous = false;
-      allowAnonymousEdits = true;
+      allowAnonymousEdits = false;
+
+      # Disable online registrations
+      # Register new users via bin/manage_users
+      allowEmailRegister = false;
     };
   };
 
