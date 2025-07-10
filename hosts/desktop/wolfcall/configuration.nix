@@ -26,19 +26,26 @@
   };
 
   environment.systemPackages = with pkgs; [
-    colmena
     equibop
     bitwarden-desktop
     signal-desktop
     qbittorrent
-    ragenix
     borgbackup
     vlc
     obsidian # Note taking
+    ### nix-stuff
+    colmena
+    ragenix
+    ### Dev-tools
+    nodejs
     pnpm
-    ### GAMING
+    ### Gaming
     lutris
     wineWowPackages.waylandFull
+    ### Utils
+    wayland-utils # Wayland utilities
+    wl-clipboard # Command-line copy/paste utilities for Wayland
+
   ];
 
   programs.fish = {
@@ -55,6 +62,8 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.wayland.enable = true;
+
+  programs.xwayland.enable = true;
 
   virtualisation = {
     containers.enable = true;
