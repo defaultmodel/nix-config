@@ -7,7 +7,6 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAO/RjuSJEP2Ne0sr4q8PQdXUoGuZFTZYtvY/7JsJVan";
 in {
   "wg-conf.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
-  "smb-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "paperless-admin-password.age".publicKeys =
     [ defaultmodel-wolfcall root-rhodes ];
   "slskd-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
