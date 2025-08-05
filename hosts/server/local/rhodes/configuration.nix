@@ -14,7 +14,7 @@
     ./services/caddy.nix
     ./services/rss.nix
     ./services/vaultwarden.nix
-    ./services/immich.nix
+    # ./services/immich.nix
     ./services/paperless.nix
     ./services/fancontrol.nix
     ./services/hedgedoc.nix
