@@ -20,7 +20,6 @@
           allowApplyAll = false;
           nixpkgs = import nixpkgs {
             system = "x86_64-linux";
-            # overlays = [ (import ./overlays/caddy.nix) ];
             config.allowUnfree = true;
           };
           specialArgs = { inherit inputs; };
