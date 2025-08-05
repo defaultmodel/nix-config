@@ -176,7 +176,8 @@ in {
           options = [ ];
         };
         dhcpv6 = {
-          range_start = "";
+          range_start = "::ffff:0:0";
+          range_end = "::ffff:ffff:ffff";
           lease_duration = 86400;
           ra_slaac_only = false;
           ra_allow_slaac = false;
