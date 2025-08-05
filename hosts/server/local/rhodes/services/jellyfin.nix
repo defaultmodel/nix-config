@@ -1,7 +1,7 @@
 { config, lib, ... }:
 with lib;
 let
-  mediaDir = "/data";
+  mediaDir = "/data/media";
   srv = config.services.jellyfin;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "jellyfin.defaultmodel.eu.org";
