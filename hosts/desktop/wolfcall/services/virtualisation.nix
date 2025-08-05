@@ -14,7 +14,11 @@
     win-spice
     adwaita-icon-theme
     quickemu # some nice shit right there
+    vagrant
   ];
+
+  # Bypasses the need to specify --provider=libvirt each time when using vagrant
+  environment.variables.VAGRANT_DEFAULT_PROVIDER = "libvirt";
 
   virtualisation = {
     libvirtd = {
