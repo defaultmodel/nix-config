@@ -4,11 +4,9 @@ let
   srv = config.services.navidrome;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "navidrome.defaultmodel.eu.org";
-in
-{
-  systemd.tmpfiles.rules = [
-    "d '${musicFolder}'        0775 ${srv.user} ${srv.group} - -"
-  ];
+in {
+  systemd.tmpfiles.rules =
+    [ "d '${musicFolder}'        0775 ${srv.user} ${srv.group} - -" ];
 
   services.navidrome = {
     enable = true;
