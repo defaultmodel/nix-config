@@ -25,6 +25,7 @@
       astro-language-server # TS/Astro
       gopls # go
       golangci-lint-langserver # go
+      gdtoolkit_4 # GDScript
     ];
 
     languages = {

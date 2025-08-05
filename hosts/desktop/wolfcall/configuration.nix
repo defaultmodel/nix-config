@@ -39,6 +39,7 @@
     ### Dev-tools
     nodejs
     pnpm
+    godot
     ### Gaming
     lutris
     wineWowPackages.waylandFull
