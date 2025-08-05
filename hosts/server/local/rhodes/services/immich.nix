@@ -10,6 +10,7 @@ let
 in {
   # Give access to GPU for accelerated AI
   users.users.${srv.user}.extraGroups = [ "video" "render" ];
+  services.immich.accelerationDevices = [ "/dev/dri/card0" ];
   systemd.services.immich.serviceConfig = {
     DeviceAllow = mkForce [ "/dev/dri/card0" ];
   };
@@ -21,6 +22,10 @@ in {
     enable = true;
     host = "0.0.0.0";
     port = 2283;
+
+    mediaLocation = photosDir;
+
+    settings.server.externalDomain = "https://${url}";
   };
 
   ### REVERSE PROXY ###
@@ -33,6 +38,7 @@ in {
     '';
   };
 
+  ### DNS-REWRITE ###
   services.adguardhome.settings.filtering.rewrites = [{
     domain = url;
     answer =
