@@ -33,11 +33,13 @@ in {
         ratelimit = 50;
         refuse_any = true;
         # Upstream DNS servers settings:
+        # Mullvad (base)
+        # Control D Free DNS
         upstream_dns = [
-          "194.242.2.4#base.dns.mullvad.net"
-          "194.242.2.2#dns.mullvad.net"
-          "193.110.81.0#dns0.eu"
-          "185.253.5.0$dns0.eu"
+          "tls://dns.mullvad.net"
+          "https://freedns.controld.com/p0"
+          "tls://p0.freedns.controld.com"
+          "sdns://AgcAAAAAAAAACjc2Ljc2LjIuMTEAFGZyZWVkbnMuY29udHJvbGQuY29tAy9wMA"
         ];
         bootstrap_dns = [ "1.1.1.1" "8.8.8.8" "2606:4700:4700::1111" ];
         fallback_dns = [ "1.1.1.1" "8.8.8.8" ];
