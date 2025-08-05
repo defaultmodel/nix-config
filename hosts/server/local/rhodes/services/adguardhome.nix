@@ -86,7 +86,15 @@ in {
         parental_block_host = "family-block.dns.adguard.com";
         safebrowsing_block_host = "standard-block.dns.adguard.com";
         parental_enabled = false;
-        safesearch_enabled = false;
+        safe_search = {
+          enabled = true;
+          bing = true;
+          duckduckgo = true;
+          google = true;
+          pixabay = true;
+          yandex = true;
+          youtube = false;
+        };
         safebrowsing_enabled = false;
         safebrowsing_cache_size = 1048576;
         safesearch_cache_size = 1048576;
