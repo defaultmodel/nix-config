@@ -18,20 +18,20 @@ in {
     user = "reverse-proxy";
     group = "reverse-proxy";
 
-    globalConfig = ''
-      servers {
-        metrics
-      }
-      log {
-        output file /var/log/caddy/caddy_main.log {
-          roll_size 100MiB
-          roll_keep 5
-          roll_keep_for 100d
-        }
-        format json
-        level INFO
-       }
-    '';
+    # globalConfig = ''
+    #   servers {
+    #     metrics
+    #   }
+    #   log {
+    #     output file /var/log/caddy/caddy_main.log {
+    #       roll_size 100MiB
+    #       roll_keep 5
+    #       roll_keep_for 100d
+    #     }
+    #     format json
+    #     level INFO
+    #    }
+    # '';
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
