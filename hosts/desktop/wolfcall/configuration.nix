@@ -40,6 +40,8 @@
     nodejs
     pnpm
     godot
+    go
+    gotools
     ### Gaming
     lutris
     wineWowPackages.waylandFull

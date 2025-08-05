@@ -24,6 +24,7 @@
       biome # TS
       astro-language-server # TS/Astro
       gopls # go
+      golangci-lint # go
       golangci-lint-langserver # go
       gdtoolkit_4 # GDScript
     ];
@@ -103,6 +104,11 @@
           auto-format = true;
           language-servers = [ "astro-ls" ];
         }
+        {
+          name = "go";
+          auto-format = true;
+          formatter.command = "goimports";
+        }
       ];
       language-server.pyright.config.python.analysis.typeCheckingMode = "basic";
       language-server.ruff = {
@@ -126,6 +132,14 @@
           environment = "node";
         };
       };
+      # https://github.com/helix-editor/helix/pull/13204/commits/2168b092b70e1a0c9c1995ad3078a8a5e9e68583
+      language-server.golangci-lint-lsp.config.command = [
+        "golangci-lint"
+        "run"
+        "--output.json.path=stdout"
+        "--show-stats=false"
+        "--issues-exit-code=1"
+      ];
     };
 
     settings = {
