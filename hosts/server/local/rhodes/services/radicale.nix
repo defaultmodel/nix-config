@@ -1,11 +1,11 @@
 { config, ... }:
 let
-  srv = config.services.radarr;
+  srv = config.services.radicale;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "radicale.defaultmodel.eu.org";
-in
-{
+in {
 
+  # https://iotools.cloud/tool/htpasswd-generator/
   age.secrets.radicale-credentials = {
     file = ../../../../../secrets/radicale-credentials.age;
     owner = "radicale";
@@ -14,31 +14,20 @@ in
   services.radicale = {
     enable = true;
     settings = {
-      server = {
-        hosts = [ "0.0.0.0:5232" "[::]:5232" ];
-      };
+      server = { hosts = [ "0.0.0.0:5232" "[::]:5232" ]; };
       auth = {
         type = "htpasswd";
         htpasswd_filename = config.age.secrets.radicale-credentials.path;
-        htpasswd_encryption = "bcrypt";
+        htpasswd_encryption = "autodetect";
       };
-      storage = {
-        filesystem_folder = "/var/lib/radicale/collections";
-      };
-    };
-    rights = {
-      defaultmodel = {
-        user = ".+";
-        collection = "{user}";
-        permissions = "RW";
-      };
+      storage = { filesystem_folder = "/var/lib/radicale/collections"; };
     };
   };
 
   ### REVERSE PROXY ###
   services.caddy = {
     virtualHosts.${url}.extraConfig = ''
-      reverse_proxy http://localhost:${toString srv.settings.server.port}
+      reverse_proxy http://localhost:5232
       tls ${certloc}/cert.pem ${certloc}/key.pem {
         protocols tls1.3
       }
@@ -53,7 +42,7 @@ in
   }];
 
   ### HOMEPAGE ###
-  def.homepage.categories."Others"."Radicale" = {
+  def.homepage.categories."Other"."Radicale" = {
     icon = "radicale.png";
     description = "CarDAV/CalDAV manager";
     href = "https://${url}";

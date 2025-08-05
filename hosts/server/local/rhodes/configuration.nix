@@ -20,6 +20,7 @@
     ./services/hedgedoc.nix
     ./services/monitoring/default.nix
     ./services/protonmail-bridge.nix
+    ./services/radicale.nix
   ];
 
   networking = {
