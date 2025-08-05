@@ -125,16 +125,23 @@ in {
         {
           enabled = true;
           url =
-            "https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt";
-          name = "AdGuard DNS filter";
-          id = 1;
+            "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt";
+          name = "Hazgezi Pro";
+          id = 100;
+        }
+        {
+          enabled = true;
+          url =
+            "https://raw.githubusercontent.com/alexsannikov/adguardhome-filters/refs/heads/master/porn.txt";
+          name = "NSFW";
+          id = 200;
         }
         {
           enabled = false;
           url =
-            "https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt";
-          name = "AdAway Default Blocklist";
-          id = 2;
+            "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/ultimate.txt";
+          name = "Hazgezi Ultimate (will break things !)";
+          id = 300;
         }
       ];
       whitelist_filters = [ ];
