@@ -33,10 +33,12 @@
     borgbackup
     vlc
     obsidian # Note taking
+    tor-browser
     ### nix-stuff
     colmena
     ragenix
     ### Dev-tools
+    vscode
     nodejs
     pnpm
     godot
@@ -48,7 +50,6 @@
     ### Utils
     wayland-utils # Wayland utilities
     wl-clipboard # Command-line copy/paste utilities for Wayland
-
     ### KDE Applications
     kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
     kdePackages.kcalc # Calculator
