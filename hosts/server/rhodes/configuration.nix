@@ -1,36 +1,36 @@
 { ... }: {
 
   imports = [
-    ../default.nix # Common config for all local servers
+    ../default.nix # Common config for all servers
     ./disk-config.nix
     ./hardware-configuration.nix
 
-    ./nas.nix
+    # ./nas.nix
     ./media.nix
     ./backup.nix
 
-    ./services/adguardhome.nix
+    # ./services/adguardhome.nix
     ./services/homepage.nix
     ./services/caddy.nix
     ./services/rss.nix
     ./services/vaultwarden.nix
     # ./services/immich.nix
-    ./services/paperless.nix
-    ./services/fancontrol.nix
-    ./services/hedgedoc.nix
-    ./services/monitoring/default.nix
-    ./services/protonmail-bridge.nix
+    # ./services/paperless.nix
+    # ./services/fancontrol.nix
+    # ./services/hedgedoc.nix
+    # ./services/monitoring/default.nix
+    # ./services/protonmail-bridge.nix
     ./services/radicale.nix
   ];
 
   networking = {
     hostName = "rhodes";
     interfaces.bond0.ipv4.addresses = [{
-      address = "192.168.1.30";
+      address = "192.168.8.30";
       prefixLength = 24;
     }];
     defaultGateway = {
-      address = "192.168.1.1";
+      address = "192.168.8.1";
       interface = "bond0";
     };
     bonds = {
@@ -44,10 +44,4 @@
       };
     };
   };
-
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 80 443 ];
-  };
-
 }

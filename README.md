@@ -5,6 +5,17 @@
   nix --extra-experimental-features nix-command --extra-experimental-features flake run github:nix-community/nixos-anywhere -- --disko-mode disko --flake .#<hostname> --target-host nixos@<host ip>
 ```
 
+## Rhodes
+
+- Dashboard : Homepage
+- Reverse proxy : Caddy
+- Data sync : SyncThing
+- File share : Copyparty
+- RSS : Miniflux
+- CarDAV/CalDAV : radicale
+- Password Manager : Vaultwarden
+- Backups : Borgo
+
 ## Secrets File Structure
 
 1. **wg-conf.age**

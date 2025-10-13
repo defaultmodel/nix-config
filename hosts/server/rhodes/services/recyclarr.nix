@@ -30,14 +30,12 @@ in {
           include = [
             # Shows
             { template = "radarr-quality-definition-movie"; }
+            { template = "radarr-quality-profile-remux-web-1080p"; }
             {
-              template = "radarr-quality-profile-hd-remux-web-french-multi-vf";
-            }
-            {
-              template = "radarr-custom-formats-hd-remux-web-french-multi-vf";
+              template = "radarr-custom-formats-remux-web-1080p";
             }
             # Anime
-            # {template = "radarr-quality-definition-movie" ;} # Shows take priority
+            # {template = "radarr-quality-definition-movie" ;} # Movies take priority
             { template = "radarr-quality-profile-anime"; }
             { template = "radarr-custom-formats-anime"; }
           ];
@@ -51,8 +49,8 @@ in {
                 "802dd70b856c423a9b0cb7f34ac42be1" # VOQ
               ];
               assign_scores_to = [{
-                name = "FR-REMUX-MULTi-VF-HD";
-                score = 101;
+                name = "REMUX-HD";
+                score = 51;
               }];
             }
             {
@@ -68,8 +66,8 @@ in {
                 "9f6cbff8cfe4ebbc1bde14c7b7bec0de" # IMAX Enhanced
               ];
               assign_scores_to = [{
-                name = "FR-REMUX-MULTi-VF-HD";
-                score = 51;
+                name = "REMUX-HD";
+                score = 101;
               }];
             }
           ];
@@ -85,18 +83,14 @@ in {
           include = [
             # Shows
             { template = "sonarr-quality-definition-series"; }
+            { template = "sonarr-v4-quality-profile-web-1080p-"; }
             {
-              template =
-                "sonarr-v4-quality-profile-bluray-web-1080p-french-multi-vf";
-            }
-            {
-              template =
-                "sonarr-v4-custom-formats-bluray-web-1080p-french-multi-vf";
+              template = "sonarr-v4-custom-formats-web-1080p";
             }
             # Anime
             # {template = "sonarr-quality-definition-anime" ;} # Shows take priority
-            { template = "sonarr-v4-quality-profile-1080p-french-anime-multi"; }
-            { template = "sonarr-v4-custom-formats-1080p-french-anime-multi"; }
+            { template = "sonarr-v4-quality-profile-anime"; }
+            { template = "sonarr-v4-custom-formats-anime"; }
           ];
           custom_formats = [
             {
@@ -108,8 +102,8 @@ in {
                 "802dd70b856c423a9b0cb7f34ac42be1" # VOQ
               ];
               assign_scores_to = [{
-                name = "FR-MULTi-VF-WEB-1080p";
-                score = 101;
+                name = "WEB-1080p";
+                score = 51;
               }];
             }
             {
@@ -117,8 +111,8 @@ in {
                 "44b6c964dad997577d793fd004a39224" # FR Anime FanSub
               ];
               assign_scores_to = [{
-                name = "FR-ANIME-MULTi";
-                score = 101;
+                name = "WEB-1080p";
+                score = 51;
               }];
             }
           ];

@@ -21,20 +21,20 @@ in {
     ### MEDIA ###
     ./services/jellyfin.nix
     ./services/jellyseerr.nix
-    ./services/navidrome.nix
+    # ./services/navidrome.nix
     ### ARR ###
     ./services/radarr.nix
     ./services/sonarr.nix
-    ./services/lidarr.nix
+    # ./services/lidarr.nix
     ./services/prowlarr.nix
     ./services/bazarr.nix
     ./services/recyclarr.nix
+    ./services/flaresolverr.nix
     ### DOWNLOADERS ###
     ./services/torrent.nix
-    ./services/slskd.nix
+    ./services/slskd.nix # The one we shall not name
 
-    ./services/flaresolverr.nix
-    ./services/beets.nix
+    # ./services/beets.nix
   ];
 }
 

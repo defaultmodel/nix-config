@@ -40,6 +40,7 @@
         "browseable" = "no";
         "read only" = "no";
         "guest ok" = "no";
+        "writable" = "yes";
         "create mask" = "0644";
         "directory mask" = "0755";
       };

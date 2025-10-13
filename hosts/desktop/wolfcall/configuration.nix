@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, pkgs-unstable, ... }: {
 
   imports = [
     ../default.nix
@@ -21,19 +21,26 @@
 
   users.users.defaultmodel = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups =
+      [ "wheel" "networkmanager" "docker" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;
   };
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     equibop
+
     bitwarden-desktop
-    signal-desktop
+
     qbittorrent
     borgbackup
     vlc
     obsidian # Note taking
     tor-browser
+    rpcs3
+    firejail
+    wireguard-tools
+    freerdp
+    "github:TibixDev/winboat"
     ### nix-stuff
     colmena
     ragenix
@@ -65,7 +72,7 @@
     hunspell # spell checking
     hunspellDicts.en-us
     hunspellDicts.fr-any
-  ];
+  ]) ++ (with pkgs-unstable; [ signal-desktop ]);
 
   programs.fish = {
     enable = true;
