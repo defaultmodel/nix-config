@@ -19,6 +19,7 @@
     fzf # fuzzy finder
     sad # better sed
     zellij # Terminal multiplexer
+    borgbackup
 
     # misc
     file

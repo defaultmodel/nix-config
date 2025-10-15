@@ -32,7 +32,6 @@
     bitwarden-desktop
 
     qbittorrent
-    borgbackup
     vlc
     obsidian # Note taking
     tor-browser
@@ -40,7 +39,6 @@
     firejail
     wireguard-tools
     freerdp
-    "github:TibixDev/winboat"
     ### nix-stuff
     colmena
     ragenix
