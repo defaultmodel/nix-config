@@ -7,4 +7,8 @@
 
   # at least I try to be secure ¯\_(ツ)_/¯
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 ];
+
+  users.users."root".openssh.authorizedKeys.keyFiles =
+    [ ./ssh-authorized-keys ];
 }
