@@ -1,5 +1,4 @@
-{ ... }:
-{
+{ ... }: {
   # Ouch !! 0.2016€ / kWh 
 
   hardware.cpu.intel.updateMicrocode = true;
@@ -20,9 +19,4 @@
   #     '';
   #     deps = [];
   # };
-
-  services.thermald.enable = true;
-  environment.etc."sysconfig/lm_sensors".text = ''
-    HWMON_MODULES="coretemp"
-  '';
 }
