@@ -17,21 +17,6 @@ in {
     enable = true;
     user = "reverse-proxy";
     group = "reverse-proxy";
-
-    # globalConfig = ''
-    #   servers {
-    #     metrics
-    #   }
-    #   log {
-    #     output file /var/log/caddy/caddy_main.log {
-    #       roll_size 100MiB
-    #       roll_keep 5
-    #       roll_keep_for 100d
-    #     }
-    #     format json
-    #     level INFO
-    #    }
-    # '';
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
@@ -46,7 +31,6 @@ in {
       extraDomainNames = [ "*.defaultmodel.eu.org" ];
       dnsProvider = "desec";
       dnsResolver = "1.1.1.1:53";
-      dnsPropagationCheck = true;
       environmentFile = config.age.secrets.dns-provider-api-key.path;
     };
   };
