@@ -33,7 +33,9 @@
         };
 
         wolfcall = hosts/desktop/wolfcall/deployment.nix;
-        rhodes = hosts/server/local/rhodes/deployment.nix;
+        rhodes = hosts/server/rhodes/deployment.nix;
+        lemnos = hosts/server/lemnos/deployment.nix;
+        agios = hosts/server/agios/deployment.nix;
       };
     };
 }
