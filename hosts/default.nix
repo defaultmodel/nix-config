@@ -3,20 +3,22 @@
   # This is imported by all hosts
 
   imports = [
-    ./services/boot.nix
     ./services/default-packages.nix
     ./services/fonts.nix
     ./services/locale.nix
-    ./services/sound.nix
     ./services/ssh-hardening.nix
     ./services/storage-optimization.nix
     ./services/system-hardening.nix
   ];
 
-  # give me that negetive karma
-  nixpkgs.config.allowUnfree = true;
+  # Make my machines aware of each other
+  networking.hosts = {
+    "152.70.21.44" = [ "lemnos" "oracle1" ];
+    "141.144.227.227" = [ "agios" "oracle2" ];
+  };
 
-  services.tailscale.enable = true;
+  # give me that negative karma
+  nixpkgs.config.allowUnfree = true;
 
   # Eiffel Tower FTW !!
   time.timeZone = lib.mkDefault "Europe/Paris";
