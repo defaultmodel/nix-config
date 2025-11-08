@@ -20,9 +20,11 @@
 
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
 
-    colmena.url = "github:zhaofengli/colmena";
-    colmena.inputs.nixpkgs.follows = "nixpkgs";
-    colmena.inputs.flake-utils.follows = "flake-utils";
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
   outputs = { self, colmena, nixpkgs, nixpkgs-unstable, home-manager, disko
     , agenix, vpn-confinement, ... }@inputs: {
