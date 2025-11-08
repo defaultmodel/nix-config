@@ -2,23 +2,32 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     disko = {
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
+
     };
+
     agenix.url = "github:ryantm/agenix";
+
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
+
+    colmena.url = "github:zhaofengli/colmena";
+    colmena.inputs.nixpkgs.follows = "nixpkgs";
+    colmena.inputs.flake-utils.follows = "flake-utils";
   };
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, disko, agenix
-    , vpn-confinement, ... }@inputs: {
+  outputs = { self, colmena, nixpkgs, nixpkgs-unstable, home-manager, disko
+    , agenix, vpn-confinement, ... }@inputs: {
       colmena = {
         meta = {
-          # It helps prevent accidental deployments to the entire cluster when tags are used (e.g., @production and @staging).
-          allowApplyAll = false;
           nixpkgs = import nixpkgs {
             system = "x86_64-linux";
             config.allowUnfree = true;
@@ -37,6 +46,8 @@
         lemnos = hosts/server/lemnos/deployment.nix;
         agios = hosts/server/agios/deployment.nix;
       };
+      colmenaHive = colmena.lib.makeHive self.outputs.colmena;
+      nixosConfigurations = self.outputs.colmenaHive.nodes;
     };
 }
 
