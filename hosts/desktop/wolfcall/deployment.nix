@@ -2,11 +2,7 @@
   deployment = {
     # Allow local deployment with `colmena apply-local`
     allowLocalDeployment = true;
-
-    # Disable SSH deployment. This node will be skipped in a
-    # normal`colmena apply`.
-    targetHost = null;
-    tags = [ "desktop" ];
+    tags = [ "desktop" "local" ];
   };
   imports = [
     inputs.disko.nixosModules.disko
