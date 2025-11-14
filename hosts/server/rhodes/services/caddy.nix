@@ -20,7 +20,7 @@ in {
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 ];
+  networking.firewall.allowedUDPPorts = [ 443 ];
 
   security.acme = {
     acceptTerms = true;
@@ -31,6 +31,7 @@ in {
       extraDomainNames = [ "*.defaultmodel.eu.org" ];
       dnsProvider = "desec";
       dnsResolver = "1.1.1.1:53";
+      dnsPropagationCheck = true;
       environmentFile = config.age.secrets.dns-provider-api-key.path;
     };
   };

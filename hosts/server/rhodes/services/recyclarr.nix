@@ -83,7 +83,7 @@ in {
           include = [
             # Shows
             { template = "sonarr-quality-definition-series"; }
-            { template = "sonarr-v4-quality-profile-web-1080p-"; }
+            { template = "sonarr-v4-quality-profile-web-1080p"; }
             {
               template = "sonarr-v4-custom-formats-web-1080p";
             }

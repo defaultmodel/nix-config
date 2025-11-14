@@ -22,7 +22,7 @@ in {
     categories = mkOption {
       type = types.attrsOf categoryType;
       default = { };
-      description = "Services grouped by category name.";
+      description = "Services groupé par catégorie";
     };
   };
 

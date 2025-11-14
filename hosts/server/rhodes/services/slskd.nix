@@ -7,8 +7,7 @@ let
   mediaDir = "/data/soulseek";
   completeDir = "${mediaDir}/complete";
   incompleteDir = "${mediaDir}/incomplete";
-in
-{
+in {
   systemd.tmpfiles.rules = [
     "d '${mediaDir}'  0775 ${srv.user} ${srv.group} - -"
     "d '${completeDir}'  0775 ${srv.user} ${srv.group} - -"
@@ -59,11 +58,8 @@ in
         incomplete = incompleteDir;
       };
       shares = {
-        directories = [
-          "/data/media/movies"
-          "/data/media/shows"
-          "/data/media/music"
-        ];
+        directories =
+          [ "/data/media/movies" "/data/media/shows" "/data/media/music" ];
       };
     };
   };
