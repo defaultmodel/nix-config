@@ -2,7 +2,7 @@ let
   defaultmodel-wolfcall =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtsgdnGkeAWcGjsLyQRhCJDJyfwlD0euUW37u8ou6px";
   root-rhodes =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAO/RjuSJEP2Ne0sr4q8PQdXUoGuZFTZYtvY/7JsJVan";
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIsBkMKOydPKaZKlapBojVUlCLd60nA/Kt/+OpSf9ka3 root@homelab";
   root-lemnos =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzfJLEwBnRwDBQlSG28krTAPp1LImWxnNm3LfkcFlcF";
   root-agios =
@@ -12,7 +12,6 @@ in {
   "paperless-admin-password.age".publicKeys =
     [ defaultmodel-wolfcall root-rhodes ];
   "slskd-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
-  "torrent-credentials.age".publicKeys = [ defaultmodel-wolfcall root-rhodes ];
   "dns-provider-api-key.age".publicKeys =
     [ defaultmodel-wolfcall root-rhodes root-agios ];
   "rss-credentials.age".publicKeys = [ defaultmodel-wolfcall root-agios ];
