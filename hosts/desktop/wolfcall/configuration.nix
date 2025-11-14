@@ -26,11 +26,8 @@
     shell = pkgs.fish;
   };
 
+
   environment.systemPackages = (with pkgs; [
-    equibop
-
-    bitwarden-desktop
-
     qbittorrent
     vlc
     obsidian # Note taking
@@ -70,7 +67,7 @@
     hunspell # spell checking
     hunspellDicts.en-us
     hunspellDicts.fr-any
-  ]) ++ (with pkgs-unstable; [ signal-desktop ]);
+  ]) ++ (with pkgs-unstable; [ signal-desktop vesktop winboat ]);
 
   programs.fish = {
     enable = true;
