@@ -9,16 +9,14 @@ in {
 
   services.borgbackup = {
     jobs."hetzner" = {
-      paths = [
-        "/var/lib"
-        "/etc/ssh"
-        "/data/photos"
-        "/data/documents"
-        "/data/backups"
-        "/data/media/music"
+      paths = [ "/var/lib" "/etc/ssh" "/data" "/home" "/root" ];
+      exclude = [
+        "/data/media/shows"
+        "/data/media/movies"
+        "/var/lib/docker"
+        "/var/lib/systemd"
       ];
-      exclude = [ "/var/lib/docker" "/var/lib/systemd" ];
-      repo = "ssh://u414837-sub1@u414837.your-storagebox.de/home/borg-repo";
+      repo = "ssh://u414837-sub1@u414837.your-storagebox.de/home/rhodes";
       encryption = {
         mode = "repokey-blake2";
         passCommand =
@@ -27,26 +25,24 @@ in {
       environment = {
         BORG_RSH = "ssh -p 23 -i /etc/ssh/ssh_host_ed25519_key";
       };
-      compression = "auto,lzma";
+      compression = "zstd,3";
       startAt = "daily";
       extraCreateArgs = "--verbose --stats";
       prune.keep = {
         within = "1d"; # Keep all archives from the last day
         daily = 7;
         weekly = 4;
-        monthly = 1;
-        yearly = 3;
+        monthly = 6;
+        yearly = 1;
       };
     };
   };
 
-  services.postgresqlBackup = {
-    enable = true;
-    location = pgBackupDir;
-    backupAll = true;
-    startAt = "daily";
-    compression = "zstd";
-    compressionLevel = 3;
-  };
+  # services.postgresqlBackup = {
+  #   enable = true;
+  #   location = pgBackupDir;
+  #   backupAll = true;
+  #   startAt = "daily";
+  # };
 }
 
