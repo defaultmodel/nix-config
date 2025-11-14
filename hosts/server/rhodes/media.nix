@@ -21,11 +21,10 @@ in {
     ### MEDIA ###
     ./services/jellyfin.nix
     ./services/jellyseerr.nix
-    # ./services/navidrome.nix
+    ./services/navidrome.nix
     ### ARR ###
     ./services/radarr.nix
     ./services/sonarr.nix
-    # ./services/lidarr.nix
     ./services/prowlarr.nix
     ./services/bazarr.nix
     ./services/recyclarr.nix
