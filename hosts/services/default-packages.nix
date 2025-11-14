@@ -53,5 +53,6 @@
     dmidecode # for `sensors-detect` to detect IPMI
     pciutils # lspci
     usbutils # lsusb
+    mdadm
   ];
 }
