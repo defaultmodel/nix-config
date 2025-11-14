@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  srv = config.services.deluge;
+  srv = config.services.qbittorrent;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "torrent.defaultmodel.eu.org";
 
@@ -23,47 +23,60 @@ in {
     group = "media";
   };
 
-  services.deluge = {
+  services.qbittorrent = {
     enable = true;
     user = "torrent";
     group = "media";
 
-    authFile = config.age.secrets.torrent-credentials.path;
-    web.enable = true;
+    webuiPort = 8301;
+    torrentingPort = 24325;
+    openFirewall = true;
 
-    declarative = true;
-    config = {
-      download_location = downloadDir;
-      enabled_plugins = [ "Label" "WebUi" ];
-
-      auto_managed = false;
-      max_connections_global = -1;
-      max_upload_speed = -1;
-      max_download_speed = -1;
-      max_upload_slots_global = -1;
-      max_active_seeding = -1;
-      max_active_downloading = -1;
-      max_active_limit = -1;
-      super_seeding = true;
-
-      random_outgoing_ports = false;
-      pre_allocate_storage = true;
-      # Networking
-      allow_remote = true;
-      daemon_port = 58846;
-      random_port = false;
-      listen_ports = [ 6881 ];
-      enc_level = 1; # Full stream encryption
-      # Features
-      upnp = false;
-      natpmp = false;
+    serverConfig = {
+      LegalNotice.Accepted = true;
+      Core.AutoDeleteAddedTorrentFile = "IfAdded";
+      BitTorrent.Session = {
+        AddTorrentStopped = false;
+        AlternativeGlobalDLSpeedLimit = 0;
+        AlternativeGlobalUPSpeedLimit = 0;
+        BTProtocol = "TCP";
+        DefaultSavePath = "/data/torrent";
+        DisableAutoTMMByDefault = false;
+        DisableAutoTMMTriggers.CategorySavePathChanged = false;
+        DisableAutoTMMTriggers.DefaultSavePathChanged = false;
+        MaxConnections = -1;
+        MaxConnectionsPerTorrent = -1;
+        MaxUploads = -1;
+        MaxUploadsPerTorrent = -1;
+        Preallocation = true;
+        QueueingSystemEnabled = false;
+        TempPathEnabled = true;
+        TempPath = "/data/torrent/.incomplete";
+        # Bind to the ProtonVPN WireGuard interface to avoid leaks
+        Interface = "wg0";
+        InterfaceName = "wg0";
+      };
+      Preferences = {
+        General.Locale = "fr";
+        WebUI = {
+          Username = "defaultmodel";
+          # nix run git+https://codeberg.org/feathecutie/qbittorrent_password -- -p <password>
+          Password_PBKDF2 =
+            "@ByteArray(QuhSmvrTLctWL2odAFfaUw==:ohAN42sYKMkovM5XIAVy+FgjMw/hZ1vcdEigNQiLjB+/1rTS5GB/ALgsE8+KHwUVMbN4ca2zWXCmv8c2jV0xBg==)";
+          Address = "192.168.15.1"; # Address in `ip netns exec wg ip a`
+          AuthSubnetWhitelistEnabled = true;
+          AuthSubnetWhitelist = "192.168.15.5, 192.168.8.0/24, 127.0.0.1";
+          ClickjackingProtection = false;
+          CSRFProtection = false;
+        };
+        Network.PortForwardingEnabled = false;
+      };
     };
   };
 
-  ### REVERSE PROXY ###
   services.caddy = {
     virtualHosts.${url}.extraConfig = ''
-      reverse_proxy http://192.168.15.1:${toString srv.web.port}
+      reverse_proxy http://192.168.15.1:${toString srv.webuiPort}
       tls ${certloc}/cert.pem ${certloc}/key.pem {
         protocols tls1.3
       }
@@ -78,19 +91,19 @@ in {
   }];
 
   ### HOMEPAGE ###
-  def.homepage.categories."Downloaders"."Deluge" = {
-    icon = "deluge.png";
+  def.homepage.categories."Downloaders"."qBittorrent" = {
+    icon = "qbittorrent.png";
     description = "Torrent downloader";
     href = "https://${url}";
   };
 
   ### VPN ###
   # Enable and specify VPN namespace to confine service in.
-  systemd.services.deluged.vpnConfinement = {
+  systemd.services."qbittorrent".vpnConfinement = {
     enable = true;
     vpnNamespace = "wg";
   };
-  systemd.services.delugeweb.vpnConfinement = {
+  systemd.services."qbittorrent-nox".vpnConfinement = {
     enable = true;
     vpnNamespace = "wg";
   };
@@ -98,18 +111,12 @@ in {
   # Port mappings
   vpnNamespaces.wg = {
     portMappings = [{
-      from = srv.web.port;
-      to = srv.web.port;
+      from = srv.webuiPort;
+      to = srv.webuiPort;
     }];
-    openVPNPorts = [
-      {
-        port = srv.config.daemon_port;
-        protocol = "both";
-      }
-      {
-        port = 6881;
-        protocol = "both";
-      }
-    ];
+    openVPNPorts = [{
+      port = srv.torrentingPort;
+      protocol = "both";
+    }];
   };
 }
