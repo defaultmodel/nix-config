@@ -32,7 +32,7 @@ in {
   services.adguardhome.settings.filtering.rewrites = [{
     domain = url;
     answer =
-      (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+      (builtins.elemAt (config.networking.interfaces.enp2s0.ipv4.addresses)
         0).address;
   }];
 

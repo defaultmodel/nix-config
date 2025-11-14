@@ -3,8 +3,7 @@ let
   srv = config.services.jellyseerr;
   certloc = "/var/lib/acme/defaultmodel.eu.org";
   url = "jellyseer.defaultmodel.eu.org";
-in
-{
+in {
   services.jellyseerr = {
     enable = true;
     openFirewall = true;
@@ -23,7 +22,7 @@ in
   services.adguardhome.settings.filtering.rewrites = [{
     domain = url;
     answer =
-      (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
+      (builtins.elemAt (config.networking.interfaces.enp2s0.ipv4.addresses)
         0).address;
   }];
 

@@ -101,9 +101,8 @@ in {
         parental_cache_size = 1048576;
         rewrites = [{
           domain = url;
-          answer =
-            (builtins.elemAt (config.networking.interfaces.bond0.ipv4.addresses)
-              0).address;
+          answer = (builtins.elemAt
+            (config.networking.interfaces.enp2s0.ipv4.addresses) 0).address;
         }];
         cache_time = 30;
         filters_update_interval = 24;
@@ -163,8 +162,8 @@ in {
         "@@||appsbackup-pa.googleapis.com^$important # Used to backup device settings and app data."
       ];
       dhcp = {
-        enabled = true;
-        interface_name = "bond0";
+        enabled = false;
+        interface_name = "enp2s0";
         local_domain_name = "lan";
         dhcpv4 = {
           gateway_ip = "192.168.1.1";
