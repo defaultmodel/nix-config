@@ -11,17 +11,8 @@
     ./services/system-hardening.nix
   ];
 
-  # Make my machines aware of each other
-  networking.hosts = {
-    "152.70.21.44" = [ "lemnos" "oracle1" ];
-    "141.144.227.227" = [ "agios" "oracle2" ];
-  };
-
-  # give me that negative karma
-  nixpkgs.config.allowUnfree = true;
-
-  # Eiffel Tower FTW !!
-  time.timeZone = lib.mkDefault "Europe/Paris";
+  # Is there a time when I don't want this ?
+  boot.kernel.sysctl."net.ipv4.ip_forward" = lib.mkDefault 1;
 
   # Experimental my ass
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

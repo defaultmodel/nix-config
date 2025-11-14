@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+  # give me that negative karma
+  nixpkgs.config.allowUnfree = true;
+
   # fuck nano all my homies use helix
   environment.variables.EDITOR = "hx";
 
