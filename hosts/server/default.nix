@@ -3,6 +3,7 @@
     ../default.nix # Common config for all hosts
     ./services/low-power.nix
     ./services/watchdog.nix
+    ./services/boot.nix
   ];
 
   # at least I try to be secure ¯\_(ツ)_/¯
