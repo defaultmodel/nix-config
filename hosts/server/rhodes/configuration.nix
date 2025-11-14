@@ -2,25 +2,23 @@
 
   imports = [
     ../default.nix # Common config for all servers
-    ./disk-config.nix
     ./hardware-configuration.nix
 
-    # ./nas.nix
     ./media.nix
     ./backup.nix
 
-    # ./services/adguardhome.nix
+    ./services/adguardhome.nix
     ./services/homepage.nix
     ./services/caddy.nix
-    ./services/rss.nix
-    ./services/vaultwarden.nix
+    # ./services/rss.nix
+    # ./services/vaultwarden.nix
     # ./services/immich.nix
     # ./services/paperless.nix
-    # ./services/fancontrol.nix
+    ./services/fancontrol.nix
     # ./services/hedgedoc.nix
     # ./services/monitoring/default.nix
     # ./services/protonmail-bridge.nix
-    ./services/radicale.nix
+    # ./services/radicale.nix
   ];
 
   networking = {
