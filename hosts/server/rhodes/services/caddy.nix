@@ -2,7 +2,7 @@
 let srv = config.services.caddy;
 in {
   age.secrets.dns-provider-api-key = {
-    file = ../../../../../secrets/dns-provider-api-key.age;
+    file = ../../../../secrets/dns-provider-api-key.age;
     mode = "400";
     owner = srv.user;
   };

@@ -2,7 +2,7 @@
 let mediaDir = "/data";
 in {
 
-  age.secrets.wg-conf = { file = ../../../../secrets/wg-conf.age; };
+  age.secrets.wg-conf = { file = ../../../secrets/wg-conf.age; };
 
   vpnNamespaces.wg = {
     enable = true;

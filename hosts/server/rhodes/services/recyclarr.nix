@@ -2,13 +2,13 @@
 let srv = config.services.recyclarr;
 in {
   age.secrets.radarr-api-key-plain = {
-    file = ../../../../../secrets/radarr-api-key-plain.age;
+    file = ../../../../secrets/radarr-api-key-plain.age;
     mode = "440";
     group = srv.group;
   };
 
   age.secrets.sonarr-api-key-plain = {
-    file = ../../../../../secrets/sonarr-api-key-plain.age;
+    file = ../../../../secrets/sonarr-api-key-plain.age;
     mode = "440";
     group = srv.group;
   };

@@ -16,7 +16,7 @@ in
   ];
 
   age.secrets.slskd-credentials = {
-    file = ../../../../../secrets/slskd-credentials.age;
+    file = ../../../../secrets/slskd-credentials.age;
     mode = "400";
     owner = srv.user;
   };

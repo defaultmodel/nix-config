@@ -5,7 +5,7 @@ let
   url = "bazarr.defaultmodel.eu.org";
 in {
   age.secrets.bazarr-api-key = {
-    file = ../../../../../secrets/bazarr-api-key.age;
+    file = ../../../../secrets/bazarr-api-key.age;
     owner = srv.user;
   };
 

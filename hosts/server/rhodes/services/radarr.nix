@@ -5,7 +5,7 @@ let
   url = "radarr.defaultmodel.eu.org";
 in {
   age.secrets.radarr-api-key = {
-    file = ../../../../../secrets/radarr-api-key.age;
+    file = ../../../../secrets/radarr-api-key.age;
     mode = "440";
     owner = srv.user;
     group = srv.group;

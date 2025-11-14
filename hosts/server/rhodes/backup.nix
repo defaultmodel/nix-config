@@ -4,7 +4,7 @@ in {
   systemd.tmpfiles.rules = [ "d ${pgBackupDir} 1777 nobody nogroup - -" ];
 
   age.secrets.hetzner-backup-passphrase = {
-    file = ../../../../secrets/hetzner-backup-passphrase.age;
+    file = ../../../secrets/hetzner-backup-passphrase.age;
   };
 
   services.borgbackup = {

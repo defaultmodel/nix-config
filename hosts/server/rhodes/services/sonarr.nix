@@ -5,7 +5,7 @@ let
   url = "sonarr.defaultmodel.eu.org";
 in {
   age.secrets.sonarr-api-key = {
-    file = ../../../../../secrets/sonarr-api-key.age;
+    file = ../../../../secrets/sonarr-api-key.age;
     mode = "440";
     owner = srv.user;
     group = srv.group;

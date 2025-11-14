@@ -8,7 +8,7 @@ let
   consumeDir = "${config.services.paperless.dataDir}/consume";
 in {
   age.secrets.paperless-admin-password = {
-    file = ../../../../../secrets/paperless-admin-password.age;
+    file = ../../../../secrets/paperless-admin-password.age;
     owner = srv.user;
   };
 

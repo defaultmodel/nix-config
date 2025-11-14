@@ -18,12 +18,6 @@ in {
     "d '${downloadDir}/music'       0775 ${srv.user} ${srv.group} - -"
   ];
 
-  age.secrets.torrent-credentials = {
-    file = ../../../../../secrets/torrent-credentials.age;
-    mode = "400";
-    owner = srv.user;
-  };
-
   users.users.torrent = {
     isSystemUser = true;
     group = "media";
